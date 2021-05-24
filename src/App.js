@@ -1,22 +1,18 @@
 import logo from './logo.svg';
+import React, {useState} from 'react';
+import FileUpload from './FileUpload';
+import FileDisplay from './FileDisplay';
 import './App.css';
 
+
 function App() {
+  const [curState, setCurState] = useState({valid:false, fileInfo:[]});
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <FileUpload setter={setCurState} />
+        <FileDisplay state={curState} />
       </header>
     </div>
   );
