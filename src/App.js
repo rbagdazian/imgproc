@@ -20,6 +20,7 @@ function App() {
   
   const uploader = async () => {
     if(curState.isValid == true){
+      console.log("uploader was entered with valid file");
       const file = curState.fileSrc;
       try {
         setLoading(true);
@@ -36,6 +37,9 @@ function App() {
       } catch (err) {
         console.log(err);
       }
+    }
+    else {
+      console.log("uploader was entered with no file specified");
     }
   }
   
