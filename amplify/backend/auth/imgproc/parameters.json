@@ -1,7 +1,7 @@
 {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "imgpro52fc47dc",
+    "resourceNameTruncated": "imgproc7d20895",
     "userPoolName": "imgproc",
     "autoVerifiedAttributes": [
         "phone_number"
@@ -11,7 +11,7 @@
         "SMS Text Message"
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
-    "smsVerificationMessage": "Forgot password code: {####}",
+    "smsVerificationMessage": "Body {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
@@ -23,18 +23,15 @@
         "Requires Uppercase"
     ],
     "requiredAttributes": [
-        "email",
-        "given_name",
-        "family_name",
-        "phone_number"
+        "email"
     ],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "imgpro52fc47dc_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "imgproc7d20895_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "52fc47dc",
+    "sharedId": "c7d20895",
     "resourceName": "imgproc",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
@@ -60,6 +57,5 @@
     "thirdPartyAuth": false,
     "authProviders": [],
     "usernameCaseSensitive": false,
-    "dependsOn": [],
-    "hostedUI": false
+    "dependsOn": []
 }
