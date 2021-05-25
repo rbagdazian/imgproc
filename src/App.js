@@ -2,7 +2,9 @@ import logo from './logo.svg';
 import React, {useState} from 'react';
 import FileUpload from './FileUpload';
 import FileDisplay from './FileDisplay';
+
 import './App.css';
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 
 
 function App() {
@@ -14,8 +16,10 @@ function App() {
         <FileUpload setter={setCurState} />
         <FileDisplay state={curState} />
       </header>
+      <AmplifySignOut />      
     </div>
   );
 }
 
-export default App;
+export default withAuthenticator(App);
+
