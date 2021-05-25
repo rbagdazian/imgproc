@@ -1,6 +1,6 @@
 {
   "auth": {
-    "imgproc": {
+    "imgproc77e67c00": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],

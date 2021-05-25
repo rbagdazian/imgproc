@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "imgproc": {}
+        "imgproc": {},
+        "imgproc77e67c00": {}
       }
     }
   }

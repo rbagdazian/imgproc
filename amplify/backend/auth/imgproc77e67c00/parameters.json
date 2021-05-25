@@ -1,38 +1,37 @@
 {
-    "identityPoolName": "testAuthIdentityPool",
+    "identityPoolName": "imgproc77e67c00_identitypool_77e67c00",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "imgproc7d20895",
-    "userPoolName": "imgproc",
+    "resourceNameTruncated": "imgpro77e67c00",
+    "userPoolName": "imgproc77e67c00_userpool_77e67c00",
     "autoVerifiedAttributes": [
-        "phone_number"
+        "email"
     ],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
         "SMS Text Message"
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
-    "smsVerificationMessage": "Body {####}",
+    "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
-    "passwordPolicyCharacters": [
-        "Requires Lowercase",
-        "Requires Numbers",
-        "Requires Symbols",
-        "Requires Uppercase"
-    ],
+    "passwordPolicyCharacters": [],
     "requiredAttributes": [
         "email"
     ],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [],
-    "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "imgproc7d20895_userpoolclient_lambda_role",
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "userpoolClientReadAttributes": [
+        "email"
+    ],
+    "userpoolClientLambdaRole": "imgpro77e67c00_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "c7d20895",
-    "resourceName": "imgproc",
+    "sharedId": "77e67c00",
+    "resourceName": "imgproc77e67c00",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,16 +45,9 @@
             "Arn"
         ]
     },
-    "serviceName": "Cognito",
-    "usernameAttributes": [
-        "email"
-    ],
-    "useDefault": "manual",
-    "userPoolGroups": false,
+    "useDefault": "default",
     "userPoolGroupList": [],
-    "adminQueries": false,
-    "thirdPartyAuth": false,
-    "authProviders": [],
+    "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "dependsOn": []
 }
