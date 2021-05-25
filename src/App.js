@@ -18,10 +18,8 @@ function App() {
     window.location.href = downloadUrl
   }
   
-  const uploader = async () => {
-    if(curState.isValid == true){
-      console.log("uploader was entered with valid file");
-      const file = curState.fileSrc;
+  const uploader = async (fb) => {
+      const file = fb;
       try {
         setLoading(true);
         // Upload the file to s3 with private access level. 
@@ -37,9 +35,6 @@ function App() {
       } catch (err) {
         console.log(err);
       }
-    }
-    else {
-      console.log("uploader was entered with no file specified");
     }
   }
   
