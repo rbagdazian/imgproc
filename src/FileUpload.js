@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 
-function FileUpload({setter}){
+function FileUpload({setter, uploader}){
     const [selectedFile, setSelectedFile] = useState();
     const [fileBlob, setFileBlob] = useState([]);
     const [isFilePicked, setIsFilePicked] = useState(false);
@@ -17,6 +17,7 @@ function FileUpload({setter}){
     const handleSubmission = () => {
         console.log(fileBlob);
         setter({isValid:isFilePicked, fileInfo:selectedFile, fileSrc:fileBlob},[]);
+        uploader();
     }
     
     if(isFilePicked){

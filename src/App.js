@@ -18,12 +18,35 @@ function App() {
     window.location.href = downloadUrl
   }
   
+  const uploader = async () => {
+    if(curState.isValid == true){
+      const file = curState.fileSrc;
+      try {
+        setLoading(true);
+        // Upload the file to s3 with private access level. 
+        await Storage.put('picture.jpg', file, {
+          level: 'private',
+          contentType: 'image/jpg'
+        });
+        alert("Image was uploaded to s3!");
+        // Retrieve the uploaded file to display
+        //const url = await Storage.get('picture.jpg', { level: 'private' })
+        //setImageUrl(url);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+  
+  
+  
   
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <FileUpload setter={setCurState} />
+        <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
       </header>
       <AmplifySignOut />      
