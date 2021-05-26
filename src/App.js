@@ -46,6 +46,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
+        <FileList />
       </header>
       <AmplifySignOut />      
     </div>
