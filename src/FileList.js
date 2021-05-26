@@ -6,20 +6,21 @@ import Amplify, { Storage } from 'aws-amplify';
 function FileList(){
     const [fileList, setFileList] = useState([]);
     
-    function getList(){
-    }
-    
     useEffect(
         () => {
             Storage.list('', { level: 'private' })
-            .then(result => setFileList(result))
+            .then(result => {
+                setFileList(result);
+                console.log("files: ");
+                console.log(result);
+                })
             .catch(err => console.log(err))
         }, []
         );
         
     return (
         <div>
-        <h2>Available Files</h2>
+        <h3>Available Files</h3>
         <ul className="file-list">
         {fileList.map(file => (
             <li className="file-name">{file.name}</li>
