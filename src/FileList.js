@@ -11,7 +11,7 @@ function FileList(){
     useEffect(
         () => {
             Storage.list('', { level: 'private' })
-            .then((fileList) => {const fl0=fileList[0]; setFileName(fl0.key); Storage.get(fl0.key, {level: 'private', contentType: 'image/jpg' }).then(res => {setFileUrl(res)})}) // get key from Storage.list
+            .then((fileList) => {const fl0=fileList[0]; setFileName(fl0.key); Storage.get(fl0.key, {level: 'private' }).then(res => {setFileUrl(res)})}) // get key from Storage.list
             .catch(err => console.log(err))
         }, []
         );
