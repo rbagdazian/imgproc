@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import React, {useState} from 'react';
 import FileUpload from './FileUpload';
 import FileDisplay from './FileDisplay';
+import FileList from './FileList';
 
 import './App.css';
 import Amplify, { Storage } from 'aws-amplify';

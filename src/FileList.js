@@ -6,10 +6,15 @@ import Amplify, { Storage } from 'aws-amplify';
 function FileList(){
     const [fileList, setFileList] = useState([]);
     
+    function getList(){
+    }
+    
     useEffect(
-        Storage.list('', { level: 'private' })
+        () => {
+            Storage.list('', { level: 'private' })
             .then(result => setFileList(result))
-            .catch(err => console.log(err)), []
+            .catch(err => console.log(err))
+        }, []
         );
         
     return (
@@ -24,5 +29,8 @@ function FileList(){
         )        
     
     }
+    
+    
+export default FileList;
 
 
