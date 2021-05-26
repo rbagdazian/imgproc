@@ -6,11 +6,12 @@ import Amplify, { Storage } from 'aws-amplify';
 function FileList(){
     const [fileList, setFileList] = useState([]);
     const [fileUrl, setFileUrl] = useState([]);
+    const [fileName, setFileName] = useState([]);
     
     useEffect(
         () => {
             Storage.list('', { level: 'private' })
-            .then((fileList) => {const fl0=fileList[0]; Storage.get(fl0.key, {level: 'private', contentType: 'image/jpg' }).then(res => {setFileUrl(res)})}) // get key from Storage.list
+            .then((fileList) => {const fl0=fileList[0]; setFileName(fl0.key); Storage.get(fl0.key, {level: 'private', contentType: 'image/jpg' }).then(res => {setFileUrl(res)})}) // get key from Storage.list
             .catch(err => console.log(err))
         }, []
         );
@@ -18,7 +19,7 @@ function FileList(){
     return (
         <div>
         <h3>Available Files</h3>
-        <img src={fileUrl} alt='' />
+        <a href={fileUrl} target="_blank">{fileName}</a>
         </div>
         )        
     
