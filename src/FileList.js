@@ -5,6 +5,7 @@ import Amplify, { Storage } from 'aws-amplify';
 
 function FileList(){
     const [fileList, setFileList] = useState([]);
+    const [fileUrls, setFileUrls] = useState([]);
     
     useEffect(
         () => {
@@ -18,14 +19,22 @@ function FileList(){
         }, []
         );
         
+    function  getImg(fileKey){
+        const signedURL = Storage.get(fileKey); // get key from Storage.list
+        setFileUrls(signedURL => fileUrls.append(signedURL));
+    }
+        
     return (
         <div>
         <h3>Available Files</h3>
         <ul className="file-list">
         {fileList.map(file => (
-            <li className="file-name">{file.key}</li>
+            <a  onClick={getImg(file.key)}>{file.key}</a>
         ))}
-        </ul>        
+        </ul> 
+        {fileUrls.map(fileUrl => (
+            <img src={fileUrl} alt='' />
+        ))}
         </div>
         )        
     
