@@ -11,9 +11,7 @@ function FileList(){
         () => {
             Storage.list('', { level: 'private' })
             .then(result => {
-                setFileList(result);
-                console.log("files: ");
-                console.log(result);
+                setFileList(result)
                 })
             .catch(err => console.log(err))
         }, []
@@ -21,7 +19,7 @@ function FileList(){
         
     function  getImg(fileKey){
         const signedURL = Storage.get(fileKey); // get key from Storage.list
-        setFileUrls(signedURL => fileUrls.append(signedURL));
+        setFileUrls(signedURL => [ {...fileUrls, signedURL } ])
     }
         
     return (
@@ -29,12 +27,9 @@ function FileList(){
         <h3>Available Files</h3>
         <ul className="file-list">
         {fileList.map(file => (
-            <a  onClick={getImg(file.key)}>{file.key}</a>
+            <button  onClick={getImg(file.key)}>{file.key}</button>
         ))}
         </ul> 
-        {fileUrls.map(fileUrl => (
-            <img src={fileUrl} alt='' />
-        ))}
         </div>
         )        
     
