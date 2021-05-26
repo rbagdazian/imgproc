@@ -5,31 +5,20 @@ import Amplify, { Storage } from 'aws-amplify';
 
 function FileList(){
     const [fileList, setFileList] = useState([]);
-    const [fileUrls, setFileUrls] = useState([]);
+    const [fileUrl, setFileUrl] = useState([]);
     
-    function  getImg(fileKey){
-        const signedURL = Storage.get(fileKey); // get key from Storage.list
-        setFileUrls(signedURL => [ {...fileUrls, signedURL } ])
-    }
-
-
     useEffect(
         () => {
             Storage.list('', { level: 'private' })
-            .then(res =>setFileList(res))
+            .then((fileList) => {const fl0=fileList[0]; Storage.get(fl0.key).then(res => {setFileUrl(res)})}) // get key from Storage.list
             .catch(err => console.log(err))
         }, [setFileList]
         );
         
-        
     return (
         <div>
         <h3>Available Files</h3>
-        <ul className="file-list">
-        {fileList.map(file => (
-            <button  onClick={getImg(file.key)}>{file.key}</button>
-        ))}
-        </ul> 
+        <img src={fileUrl} alt='' />
         </div>
         )        
     
