@@ -7,20 +7,20 @@ function FileList(){
     const [fileList, setFileList] = useState([]);
     const [fileUrls, setFileUrls] = useState([]);
     
-    useEffect(
-        () => {
-            Storage.list('', { level: 'private' })
-            .then(result => {
-                setFileList(result)
-                })
-            .catch(err => console.log(err))
-        }, []
-        );
-        
     function  getImg(fileKey){
         const signedURL = Storage.get(fileKey); // get key from Storage.list
         setFileUrls(signedURL => [ {...fileUrls, signedURL } ])
     }
+
+
+    useEffect(
+        () => {
+            Storage.list('', { level: 'private' })
+            .then(res =>setFileList(res))
+            .catch(err => console.log(err))
+        }, [setFileList]
+        );
+        
         
     return (
         <div>
