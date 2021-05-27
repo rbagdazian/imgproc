@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/greeting",
+      "lambdaFunction": "imgprocLambdaFunc",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/greeting"
+    }
+  ],
+  "resourceName": "imgprocApi",
+  "apiName": "imgprocApi",
+  "functionArns": [
+    {
+      "lambdaFunction": "imgprocLambdaFunc"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-amplifycd6d17e509d24-staging-212120-authRole",
+    "unAuthRoleName": "amplify-amplifycd6d17e509d24-staging-212120-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "imgprocLambdaFunc",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}

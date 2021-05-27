@@ -17,7 +17,7 @@ function FileUpload({setter, uploader}){
     const handleSubmission = () => {
         console.log(fileBlob);
         setter({isValid:isFilePicked, fileInfo:selectedFile, fileSrc:fileBlob},[]);
-        uploader(fileBlob);
+        uploader(selectedFile);
     }
     
     if(isFilePicked){

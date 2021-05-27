@@ -12,5 +12,28 @@
       "service": "S3",
       "providerPlugin": "awscloudformation"
     }
+  },
+  "function": {
+    "imgprocLambdaFunc": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "api": {
+    "imgprocApi": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "imgprocLambdaFunc",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    }
   }
 }
