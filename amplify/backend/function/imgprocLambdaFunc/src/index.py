@@ -4,7 +4,10 @@ def handler(event, context):
   print('received event:')
   print(event)
   
-  body = {'message': 'Hello from your new Amplify Python lambda!'+'event path:'+event.path }
+  responseMsg = 'Hello from your new Amplify Python lambda!'+'event:'+ event
+  print(responseMsg)
+  
+  body = {'message': responseMsg }
   
   response = {
     'statusCode': 200,
