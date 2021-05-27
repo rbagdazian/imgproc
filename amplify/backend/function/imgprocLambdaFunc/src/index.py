@@ -4,8 +4,7 @@ def handler(event, context):
   print('received event:')
   print(event)
   
-  responseMsg = 'Hello from your new Amplify Python lambda!'+'event:'+ repr(event)
-  print(responseMsg)
+  responseMsg = 'Hallo from your new Amplify Python lambda! <br\>'+' event:' + event['path']
   
   body = {'message': responseMsg }
   
