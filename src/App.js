@@ -19,7 +19,7 @@ function App() {
     const apiData = await API.get('imgprocApi','/greeting')
     setGreeting(apiData.message)
   }
-
+  
   useEffect( () => {fetchGreeting()},[])
   
   const uploader = async (fb) => {
