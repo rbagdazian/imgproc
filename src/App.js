@@ -15,7 +15,7 @@ function App() {
   const [loading, setLoading] = useState(false);  
   const [greeting, setGreeting] = useState(null);
   
-  // function to send api call
+  // function to send api call 1
   async function fetchGreeting(){
     const apiData = await API.get('imgprocApi','/greeting')
     setGreeting(apiData.message)
