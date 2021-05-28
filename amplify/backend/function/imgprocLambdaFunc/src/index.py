@@ -4,9 +4,16 @@ def handler(event, context):
   print('received event:')
   print(event)
   
-  responseMsg = 'Hallo from your new Amplify Python lambda! <br\>'+' event:' + event['path']
+  responseMsg = 'Guten tag from your new Amplify Python lambda! '+' event: '+repr(event['queryStringParameters'])
   
   body = {'message': responseMsg }
+  
+  # here we can perform the incoming event parsing
+  # based in request method, path, and query string parameters
+  # need to also determine how to handle incoming post data.
+  
+  # 
+  
   
   response = {
     'statusCode': 200,

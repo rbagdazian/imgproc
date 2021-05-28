@@ -17,7 +17,7 @@ function App() {
   
   // function to send api call 2
   async function fetchGreeting(){
-    const apiData = await API.get('imgprocApi','/greeting')
+    const apiData = await API.get('imgprocApi',encodeURI('/greeting?a=123&b=456&op=-'))
     setGreeting(apiData.message)
   }
   
@@ -42,9 +42,7 @@ function App() {
       }
   }
   
-  
-  
-  
+
   return (
     <div className="App">
       <header className="App-header">
@@ -53,6 +51,7 @@ function App() {
         <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
         <FileList />
+        <div>---------------------------------</div>
       </header>
       <AmplifySignOut />      
     </div>
