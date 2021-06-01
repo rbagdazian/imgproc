@@ -5,16 +5,13 @@ def handler(event, context):
   print('received event:')
   print(event)
   
-  tf = test.testfunc
-  dispatch = {'/greeting':tf}
+  dispatch = {'/greeting':test.testfunc}
   
   fcn = dispatch[event['path']]
   
-  #respMsg = fcn(event['queryStringParameters'])
-  
-  responseMsg = 'response from function greeting!  event: ' + repr(event['queryStringParameters'])
-  
-  body = {'message':responseMsg}
+  respMsg = fcn(event['queryStringParameters'])
+
+  body = {'message':respMsg}
   
   # here we can perform the incoming event parsing
   # based in request method, path, and query string parameters
