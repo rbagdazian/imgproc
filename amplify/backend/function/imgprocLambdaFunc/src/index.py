@@ -1,19 +1,23 @@
 import json
+from greeting import greeting
 
 def handler(event, context):
   print('received event:')
   print(event)
   
-  responseMsg = 'Guten tag from your new Amplify Python lambda!' + ' path: '+ repr(event['path'])  + ' event: ' + repr(event['queryStringParameters'])
+  dispatch = {'/greeting':greeting }
   
-  body = {'message': responseMsg }
+  fcn = dispatch[event['path']]
+  
+  respMsg = fcn(event['queryStringParameters'])
+  
+  body = {'message':respMsg}
   
   # here we can perform the incoming event parsing
   # based in request method, path, and query string parameters
   # need to also determine how to handle incoming post data.
   
   # 
-  
   
   response = {
     'statusCode': 200,
