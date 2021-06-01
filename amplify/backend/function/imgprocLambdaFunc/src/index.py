@@ -4,7 +4,7 @@ def handler(event, context):
   print('received event:')
   print(event)
   
-  responseMsg = 'Guten tag from your new Amplify Python lambda! '+' event: '+repr(event['queryStringParameters'])
+  responseMsg = 'Guten tag from your new Amplify Python lambda!' + ' path: '+ repr(event['path'])  + ' event: ' + repr(event['queryStringParameters'])
   
   body = {'message': responseMsg }
   
