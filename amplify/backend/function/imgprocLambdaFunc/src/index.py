@@ -1,5 +1,5 @@
 import json
-from greeting import greeting
+import greeting
 
 def handler(event, context):
   print('received event:')
