@@ -1,17 +1,18 @@
 import json
-import greeting
 
 def handler(event, context):
   print('received event:')
   print(event)
   
-  dispatch = {'/greeting':greeting }
+  #dispatch = {'/greeting':greeting }
   
-  fcn = dispatch[event['path']]
+  #fcn = dispatch[event['path']]
   
-  respMsg = fcn(event['queryStringParameters'])
+  #respMsg = fcn(event['queryStringParameters'])
   
-  body = {'message':respMsg}
+  responseMsg = 'response from function greeting!  event: ' + repr(event['queryStringParameters'])
+  
+  body = {'message':responseMsg}
   
   # here we can perform the incoming event parsing
   # based in request method, path, and query string parameters
