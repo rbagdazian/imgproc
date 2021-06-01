@@ -1,11 +1,11 @@
 import json
-import test
+from test import testfunc
 
 def handler(event, context):
   print('received event:')
   print(event)
   
-  dispatch = {'/greeting':test.testfunc }
+  dispatch = {'/greeting':testfunc }
   
   fcn = dispatch[event['path']]
   
