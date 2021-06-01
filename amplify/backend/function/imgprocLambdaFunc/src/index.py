@@ -1,12 +1,13 @@
 import json
+from test import testfunc
 
 def handler(event, context):
   print('received event:')
   print(event)
   
-  #dispatch = {'/greeting':greeting }
+  dispatch = {'/greeting':testfunc }
   
-  #fcn = dispatch[event['path']]
+  fcn = dispatch[event['path']]
   
   #respMsg = fcn(event['queryStringParameters'])
   
