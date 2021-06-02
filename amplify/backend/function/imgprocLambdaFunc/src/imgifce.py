@@ -1,5 +1,5 @@
 
 
 def imghandler(pqs):
-    responseMsg = 'hello from imghandler!'
+    responseMsg = 'Hello from imghandler!'
     return responseMsg
