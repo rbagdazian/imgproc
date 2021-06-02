@@ -5,20 +5,22 @@ def handler(event, context):
   print('received event:')
   print(event)
   
+  # setup a single entry dictionary for now
+  # to link the incoming path to the corresponding
+  # handler in the test.py file.
   dispatch = {'/greeting':test.testfunc}
   
+  # obtain the function from the dispatch table that
+  # we should call based in the incoming path
   fcn = dispatch[event['path']]
   
+  # call the handler function supplying any query string parameters
   respMsg = fcn(event['queryStringParameters'])
 
+  # place the response into a body that will be jsonified
   body = {'message':respMsg}
   
-  # here we can perform the incoming event parsing
-  # based in request method, path, and query string parameters
-  # need to also determine how to handle incoming post data.
-  
-  # 
-  
+  # form the response
   response = {
     'statusCode': 200,
       'headers': {
@@ -29,6 +31,6 @@ def handler(event, context):
     'body': json.dumps(body)
   }
   
+  # and send it on its way
   return response
-  
   
