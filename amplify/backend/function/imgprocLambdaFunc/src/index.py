@@ -1,5 +1,6 @@
 import json
-import test
+from test import testfunc
+from imgifce import imghandler
 
 def handler(event, context):
   print('received event:')
@@ -8,7 +9,10 @@ def handler(event, context):
   # setup a single entry dictionary for now
   # to link the incoming path to the corresponding
   # handler in the test.py file.
-  dispatch = {'/greeting':test.testfunc}
+  dispatch = {
+    '/greeting':testfunc, 
+    '/image':imghandler
+  }
   
   # obtain the function from the dispatch table that
   # we should call based in the incoming path
