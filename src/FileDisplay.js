@@ -5,11 +5,12 @@ function FileDisplay({state}) {
 
     return(
         state.isValid ? (
-            <div>
-                <p>Filename: {state.fileInfo.name}</p>
-                <p>Filetype: {state.fileInfo.type}</p>
-                <p>Filesize: {state.fileInfo.size} (bytes)</p>
-                <p>last Modified:{' '} 
+            <div className="file-display">
+                <p>Filename: {state.fileInfo.name}<br />
+                Filetype: {state.fileInfo.type}<br />
+                Filesize: {state.fileInfo.size} (bytes)<br />
+                FileSrc: {state.fileSrc} <br />
+                last Modified:{' '} 
                     {state.fileInfo.lastModifiedDate.toLocaleDateString()}</p>
                 <img className='file-display-img' src={state.fileSrc} alt='' />
             </div>

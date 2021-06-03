@@ -39,5 +39,8 @@
 
 .file-display-img{
   height: 10vmin;
-  
+}
+
+.file-display{
+  font-size: 10pt;
 }
