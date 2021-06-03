@@ -33,7 +33,7 @@ function App() {
           level: 'private',
           contentType: 'image/jpg'
         });
-        alert("Image was uploaded to s3!");
+        alert("Image was uploaded to s3!"+{file});
         // Retrieve the uploaded file to display
         const url = await Storage.get('picture.jpg', { level: 'private' })
         setImageUrl(url);
