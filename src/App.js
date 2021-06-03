@@ -53,7 +53,7 @@ function App() {
         <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
         <FileList />
-        <p>{imageUrl}</p>
+        <p>{curState.fileInfo.name}</p>
         <div>---------------------------------</div>
       </header>
       <AmplifySignOut />      
