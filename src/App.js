@@ -14,6 +14,7 @@ function App() {
   const [curState, setCurState] = useState({valid:false, fileInfo:[]});
   const [loading, setLoading] = useState(false);  
   const [greeting, setGreeting] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   
   // function to send api call 2
   async function fetchGreeting(){
@@ -34,8 +35,8 @@ function App() {
         });
         alert("Image was uploaded to s3!");
         // Retrieve the uploaded file to display
-        //const url = await Storage.get('picture.jpg', { level: 'private' })
-        //setImageUrl(url);
+        const url = await Storage.get('picture.jpg', { level: 'private' })
+        setImageUrl(url);
         setLoading(false);
       } catch (err) {
         console.log(err);
@@ -51,6 +52,7 @@ function App() {
         <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
         <FileList />
+        <p>{imageUrl}</p>
         <div>---------------------------------</div>
       </header>
       <AmplifySignOut />      
