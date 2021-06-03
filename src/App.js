@@ -26,6 +26,7 @@ function App() {
   
   const uploader = async (fb) => {
       const file = fb;
+      const filename = fb.name;
       try {
         setLoading(true);
         // Upload the file to s3 with private access level. 
@@ -33,7 +34,7 @@ function App() {
           level: 'private',
           contentType: 'image/jpg'
         });
-        alert("Image was uploaded to s3!"+{file});
+        alert("Image was uploaded to s3!"+ filename);
         // Retrieve the uploaded file to display
         const url = await Storage.get('picture.jpg', { level: 'private' })
         setImageUrl(url);
