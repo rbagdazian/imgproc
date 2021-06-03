@@ -26,7 +26,7 @@ function App() {
   
   const uploader = async (fb) => {
       const file = fb;
-      const filename = fb.name;
+      const filename = curState.fileInfo.name;
       try {
         setLoading(true);
         // Upload the file to s3 with private access level. 
