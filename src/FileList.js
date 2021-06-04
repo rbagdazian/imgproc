@@ -11,15 +11,16 @@ function FileList(){
     useEffect(
         () => {
             Storage.list('', { level: 'private' })
-            .then((fileList) => {const fl0=fileList[0]; setFileName(fl0.key); Storage.get(fl0.key, {level: 'private' }).then(res => {setFileUrl(res)})}) // get key from Storage.list
+            .then((res) => {setFileList(res); const fl0=res[0]; setFileName(fl0.key); Storage.get(fl0.key, {level: 'private' }).then(res2 => {setFileUrl(res2)})}) // get key from Storage.list
             .catch(err => console.log(err))
         }, []
         );
         
     return (
         <div>
-        <h3>Available Files</h3>
+        <h3>Available Files {fileList.length}</h3>
         <a href={fileUrl} target="_blank">{fileName}</a>
+        {fileList.size}
         </div>
         )        
     

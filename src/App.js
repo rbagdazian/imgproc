@@ -30,13 +30,12 @@ function App() {
       try {
         setLoading(true);
         // Upload the file to s3 with private access level. 
-        await Storage.put('picture.jpg', file, {
-          level: 'private',
-          contentType: 'image/jpg'
-        });
+
+        await Storage.put(filename, file);
+        
         alert("Image was uploaded to s3!"+ filename);
         // Retrieve the uploaded file to display
-        const url = await Storage.get('picture.jpg', { level: 'private' })
+        const url = await Storage.get(filename)
         setImageUrl(url);
         setLoading(false);
       } catch (err) {
@@ -53,8 +52,8 @@ function App() {
         <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
         <FileList />
-        <p>{curState.fileInfo.name}</p>
         <div>---------------------------------</div>
+        <p>{curState.fileInfo.name}</p>
       </header>
       <AmplifySignOut />      
     </div>
