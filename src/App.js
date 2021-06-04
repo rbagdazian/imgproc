@@ -18,13 +18,16 @@ function App() {
   
   // function to send api call 2
   async function fetchGreeting(){
+    console.log('in fetchGreeting');
     const response = await API.get('imageapi',encodeURI('/greeting?cmd=filenames'));
+    console.log(response.message);
     setFilenames(response.message);
   }
 
-  async function fetchImage(){
+ async  function fetchImage(){
+    console.log('in fetchImage');
     const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
-    console.log(filenames);
+    console.log(response.message);
     setFilenames(response.message);
   }
 
