@@ -7,6 +7,7 @@ def imghandler(pqs):
     # Let's use Amazon S3
     s3 = boto3.resource('s3')
     bucket = s3.Bucket('imgproc-data212120-staging')
+    return repr(pqs)
     object_summary_iterator = bucket.objects.all()
     
     qinfo = parse_qs(pqs)
@@ -22,6 +23,7 @@ def imghandler(pqs):
             objlist.append(object)
         responseMsg = repr(objlist)
     elif(cmd == 'filenames'):
+        return 'filenames response'
         objnames = []
         for object in object_summary_iterator:
             filekey=object.key

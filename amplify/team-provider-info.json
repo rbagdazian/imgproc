@@ -19,7 +19,7 @@
       "function": {
         "imgprocLambdaFunc": {
           "deploymentBucketName": "amplify-amplifycd6d17e509d24-staging-212120-deployment",
-          "s3Key": "amplify-builds/imgprocLambdaFunc-694f784c2b54526e7853-build.zip"
+          "s3Key": "amplify-builds/imgprocLambdaFunc-2b73366d625854526f45-build.zip"
         }
       }
     }

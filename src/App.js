@@ -18,7 +18,7 @@ function App() {
   
   // function to send api call 2
   async function fetchFilenames(){
-    const filenames = await API.get('imgprocApi',encodeURI('/filenames'));
+    const filenames = await API.get('imgprocApi',encodeURI('/image?cmd=filenames'));
     console.log(filenames);
     setFilenames(filenames.message);
   }
@@ -49,9 +49,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        {filenames}
         <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
-        <FileList files={filenames} />
+
         <div>---------------------------------</div>
         <p>{curState.fileInfo.name}</p>
       </header>
