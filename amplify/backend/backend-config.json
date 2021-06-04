@@ -21,7 +21,7 @@
     }
   },
   "api": {
-    "imgprocApi": {
+    "imageapi": {
       "service": "API Gateway",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
