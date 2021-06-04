@@ -63,8 +63,8 @@ function App() {
         <FileDisplay state={curState} />
 
         <div>---------------------------------</div>
-        <button onChange={fetchGreeting}>Get Greeting</button>
-        <button onChange={fetchImage}>Get Image</button>
+        <button onClick={fetchGreeting}>Get Greeting</button>
+        <button onClick={fetchImage}>Get Image</button>
       </header>
       <AmplifySignOut />      
     </div>

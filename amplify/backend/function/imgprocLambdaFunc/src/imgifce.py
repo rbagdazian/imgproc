@@ -7,7 +7,6 @@ def imghandler(pqs):
     # Let's use Amazon S3
     s3 = boto3.resource('s3')
     bucket = s3.Bucket('imgproc-data212120-staging')
-    return repr(pqs)
     object_summary_iterator = bucket.objects.all()
     
     qinfo = parse_qs(pqs)
