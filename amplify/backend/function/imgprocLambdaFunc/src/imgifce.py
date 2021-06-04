@@ -4,16 +4,25 @@ import re
 from  processImage import processImage
     
 def imghandler(pqs):
-    # Let's use Amazon S3
-    s3 = boto3.resource('s3')
-    bucket = s3.Bucket('imgproc-data212120-staging')
-    object_summary_iterator = bucket.objects.all()
-    
     qinfo = parse_qs(pqs)
     try:
         cmd = qinfo['cmd'][0]
     except:
         cmd = 'nocmd'
+
+    if(cmd == 'check1'):
+        return 'checkpt 1'
+    # Let's use Amazon S3
+    s3 = boto3.resource('s3')
+    if(cmd == 'check2'):
+        return 'checkpt 2'
+    bucket = s3.Bucket('imgproc-data212120-staging')
+    if(cmd == 'check3'):
+        return 'checkpt 3'
+    object_summary_iterator = bucket.objects.all()
+    if(cmd == 'check4'):
+        return 'checkpt 4'
+    
     
     if(cmd == 'files'):
         # Output the bucket names
