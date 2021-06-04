@@ -13,16 +13,17 @@ import {API} from 'aws-amplify'
 function App() {
   const [curState, setCurState] = useState({valid:false, fileInfo:[]});
   const [loading, setLoading] = useState(false);  
-  const [greeting, setGreeting] = useState(null);
+  const [filenames, setFilenames] = useState([]);
   const [imageUrl, setImageUrl] = useState(null);
   
   // function to send api call 2
-  async function fetchGreeting(){
-    const apiData = await API.get('imgprocApi',encodeURI('/greeting?a=123&b=456&op=-'))
-    setGreeting(apiData.message)
+  async function fetchFilenames(){
+    const filenames = await API.get('imgprocApi',encodeURI('/filenames'));
+    console.log(filenames);
+    setFilenames(filenames.message);
   }
   
-  useEffect( () => {fetchGreeting()},[])
+  useEffect( () => {fetchFilenames()},[])
   
   const uploader = async (fb) => {
       const file = fb;
@@ -48,10 +49,9 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h3>{greeting}</h3>
         <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
-        <FileList />
+        <FileList files={filenames} />
         <div>---------------------------------</div>
         <p>{curState.fileInfo.name}</p>
       </header>
