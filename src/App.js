@@ -18,7 +18,7 @@ function App() {
   
   // function to send api call 2
   async function fetchFilenames(){
-    const filenames = await API.get('imgprocApi',encodeURI('/image?cmd=filenames'));
+    const filenames = await API.get('imgprocApi',encodeURI('/greeting?cmd=filenames'));
     console.log(filenames);
     setFilenames(filenames.message);
   }

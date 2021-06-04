@@ -1,6 +1,6 @@
 import json
 from test import testfunc
-from imgifce import imghandler
+from imgFunc import imgfunc
 
 def handler(event, context):
   print('received event:')
@@ -11,7 +11,7 @@ def handler(event, context):
   # handler in the test.py file.
   dispatch = {
     '/greeting':testfunc, 
-    '/image':imghandler
+    '/image':imgfunc
   }
   
   # obtain the function from the dispatch table that
