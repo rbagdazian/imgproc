@@ -17,13 +17,19 @@ function App() {
   const [imageUrl, setImageUrl] = useState(null);
   
   // function to send api call 2
-  async function fetchFilenames(){
-    const filenames = await API.get('imgprocApi',encodeURI('/greeting?cmd=filenames'));
-    console.log(filenames);
-    setFilenames(filenames.message);
+  async function fetchGreeting(){
+    const response = await API.get('imageapi',encodeURI('/greeting?cmd=filenames'));
+    setFilenames(response.message);
   }
+
+  async function fetchImage(){
+    const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
+    console.log(filenames);
+    setFilenames(response.message);
+  }
+
   
-  useEffect( () => {fetchFilenames()},[])
+  //useEffect( () => {fetchGreeting()},[])
   
   const uploader = async (fb) => {
       const file = fb;
@@ -54,7 +60,8 @@ function App() {
         <FileDisplay state={curState} />
 
         <div>---------------------------------</div>
-        <p>{curState.fileInfo.name}</p>
+        <button onChange={fetchGreeting}>Get Greeting</button>
+        <button onChange={fetchImage}>Get Image</button>
       </header>
       <AmplifySignOut />      
     </div>
