@@ -16,8 +16,8 @@
       "policyResourceName": "/doTest"
     }
   ],
-  "resourceName": "imageapi",
-  "apiName": "imageapi",
+  "resourceName": "testapi",
+  "apiName": "testapi",
   "functionArns": [
     {
       "lambdaFunction": "imgprocLambdaFunc"

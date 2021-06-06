@@ -37,16 +37,16 @@
         
         
         
-      "imageapi": {
+      "testapi": {
         "Type": "AWS::ApiGateway::RestApi",
         "Properties": {
           "Description": "",
-          "Name": "imageapi",
+          "Name": "testapi",
           "Body": {
             "swagger": "2.0",
             "info": {
               "version": "2018-05-24T17:52:00Z",
-              "title": "imageapi"
+              "title": "testapi"
             },
             "host": {
                 "Fn::Join": [
@@ -336,7 +336,7 @@
       
         
 
-        "functionimgprocLambdaFuncPermissionimageapi": {
+        "functionimgprocLambdaFuncPermissiontestapi": {
             "Type": "AWS::Lambda::Permission",
             "Properties": {
                 "FunctionName": 
@@ -360,7 +360,7 @@
                             },
                             ":",
                             {
-                                "Ref": "imageapi"
+                                "Ref": "testapi"
                             },
                             "/*/*/*"
                         ]
@@ -371,7 +371,7 @@
         
         
 
-      "DeploymentAPIGWimageapi": {
+      "DeploymentAPIGWtestapi": {
         "Type": "AWS::ApiGateway::Deployment",
         "Properties": {
           "Description": "The Development stage deployment of your API.",
@@ -385,7 +385,7 @@
             ]
           },
           "RestApiId": {
-            "Ref": "imageapi"
+            "Ref": "testapi"
           }
         }
       }
@@ -393,15 +393,15 @@
     "Outputs": {
         "RootUrl": {
             "Description": "Root URL of the API gateway",
-            "Value": {"Fn::Join": ["", ["https://", {"Ref": "imageapi"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
+            "Value": {"Fn::Join": ["", ["https://", {"Ref": "testapi"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com/", {"Fn::If": ["ShouldNotCreateEnvResources","Prod", {"Ref": "env"} ]}]]}
         },
         "ApiName": {
           "Description": "API Friendly name",
-          "Value": "imageapi"
+          "Value": "testapi"
         },
         "ApiId": {
           "Description": "API ID (prefix of API URL)",
-          "Value": {"Ref": "imageapi"}
+          "Value": {"Ref": "testapi"}
         }
     }
   }

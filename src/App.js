@@ -26,7 +26,14 @@ function App() {
 
  async  function fetchImage(){
     console.log('in fetchImage');
-    const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
+    const response = await API.get('imageapi',encodeURI('/image?cmd=check1cd'));
+    console.log(response.message);
+    setFilenames(response.message);
+  }
+  
+ async  function doTest(){
+    console.log('in doTest');
+    const response = await API.get('imageapi',encodeURI('/doTest?cmd=check1cd'));
     console.log(response.message);
     setFilenames(response.message);
   }
@@ -63,8 +70,13 @@ function App() {
         <FileDisplay state={curState} />
 
         <div>---------------------------------</div>
-        <button onClick={fetchGreeting}>Get Greeting</button>
-        <button onClick={fetchImage}>Get Image</button>
+        <table>
+        <tr>
+        <td><button onClick={fetchGreeting}>Get Greeting</button></td>
+        <td><button onClick={fetchImage}>Get Image</button></td>
+        <td><button onClick={doTest}>Get Image</button></td>
+        </tr>
+        </table>
       </header>
       <AmplifySignOut />      
     </div>
