@@ -4,16 +4,12 @@ import re
 from  processImage import processImage
     
 def imghandler(pqs):
-    qinfo = parse_qs(pqs)
-    try:
-        cmd = qinfo['cmd'][0]
-    except:
-        cmd = 'nocmd'
-        
-    responseMsg = 'imghandler cmd :: ' + cmd
+    
+    responseMsg = 'imghandler cmd :: ' + repr(pqs)
     # and return it to the caller.
     return responseMsg        
 
+    cmd = pqs['cmd']
     if(cmd == 'check1'):
         return 'checkpt 1'
     # Let's use Amazon S3

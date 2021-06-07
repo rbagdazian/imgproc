@@ -19,8 +19,9 @@ def handler(event, context):
   fcn = dispatch[event['path']]
   
   # call the handler function supplying any query string parameters
-  #respMsg = fcn(event['queryStringParameters'])
-  respMsg = event['path'] + repr(event['queryStringParameters'])
+  theQsDict = event['queryStringParameters']
+  rs = fcn(theQsDict)
+  respMsg = event['path'] + ' '+repr(event['queryStringParameters']) + ' ' +repr(theQsDict['cmd']) + ' ' + rs
 
   # place the response into a body that will be jsonified
   body = {'message':respMsg}
