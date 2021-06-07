@@ -26,7 +26,6 @@ def imghandler(pqs):
             objlist.append(object)
         responseMsg = repr(objlist)
     elif(cmd == 'filenames'):
-        return 'filenames response'
         objnames = []
         for object in object_summary_iterator:
             filekey=object.key
