@@ -20,7 +20,7 @@ def handler(event, context):
   
   # call the handler function supplying any query string parameters
   #respMsg = fcn(event['queryStringParameters'])
-  respMsg = repr(event)
+  respMsg = event['path'] + repr(event['queryStringParameters'])
 
   # place the response into a body that will be jsonified
   body = {'message':respMsg}
