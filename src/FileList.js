@@ -21,7 +21,7 @@ function FileList({files}){
         <select id="fileset">
         {files.map(
             (file) => {
-                <option value ={val++}>{file}</option>
+                <option key={file} value={file}>{file}</option>
             }  
             )
         }
