@@ -100,7 +100,7 @@ async  function getFilenames(){
         <td><button onClick={cp2}>Checkpoint 2</button></td>
         <td><button onClick={cp3}>Checkpoint 3</button></td>
         <td><button onClick={cp4}>Checkpoint 4</button></td>
-        <td><button onClick={filenames}>Filenames</button></td>
+        <td><button onClick={getFilenames}>Filenames</button></td>
         </tr>
         </table>
       </header>
