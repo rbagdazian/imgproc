@@ -25,34 +25,35 @@ function App() {
   }
 
  async  function cp1(){
-    console.log('in fetchImage');
     const response = await API.get('imageapi',encodeURI('/image?cmd=check1'));
     console.log(response.message);
     setFilenames(response.message);
   }
   
 async  function cp2(){
-    console.log('in fetchImage');
     const response = await API.get('imageapi',encodeURI('/image?cmd=check2'));
     console.log(response.message);
     setFilenames(response.message);
   }  
   
 async  function cp3(){
-    console.log('in fetchImage');
     const response = await API.get('imageapi',encodeURI('/image?cmd=check3'));
     console.log(response.message);
     setFilenames(response.message);
   }  
   
 async  function cp4(){
-    console.log('in fetchImage');
     const response = await API.get('imageapi',encodeURI('/image?cmd=check4'));
     console.log(response.message);
     setFilenames(response.message);
   }    
-  
-  
+
+async  function getFilenames(){
+    const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
+    console.log(response.message);
+    setFilenames(response.message);
+  }    
+
  async  function doTest(){
     console.log('in doTest');
     const response = await API.get('imageapi',encodeURI('/doTest?cmd=check1'));
@@ -99,6 +100,7 @@ async  function cp4(){
         <td><button onClick={cp2}>Checkpoint 2</button></td>
         <td><button onClick={cp3}>Checkpoint 3</button></td>
         <td><button onClick={cp4}>Checkpoint 4</button></td>
+        <td><button onClick={filenames}>Filenames</button></td>
         </tr>
         </table>
       </header>
