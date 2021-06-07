@@ -5,10 +5,6 @@ from  processImage import processImage
     
 def imghandler(pqs):
     
-    responseMsg = 'imghandler cmd :: ' + repr(pqs)
-    # and return it to the caller.
-    return responseMsg        
-
     cmd = pqs['cmd']
     if(cmd == 'check1'):
         return 'checkpt 1'
