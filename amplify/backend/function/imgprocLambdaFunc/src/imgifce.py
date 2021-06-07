@@ -9,6 +9,10 @@ def imghandler(pqs):
         cmd = qinfo['cmd'][0]
     except:
         cmd = 'nocmd'
+        
+    responseMsg = 'imghandler cmd :: ' + cmd
+    # and return it to the caller.
+    return responseMsg        
 
     if(cmd == 'check1'):
         return 'checkpt 1'
@@ -22,7 +26,6 @@ def imghandler(pqs):
     object_summary_iterator = bucket.objects.all()
     if(cmd == 'check4'):
         return 'checkpt 4'
-    
     
     if(cmd == 'files'):
         # Output the bucket names

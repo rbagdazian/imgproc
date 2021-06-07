@@ -13,9 +13,6 @@
     },
     "imageapi": {
       "Type": "String"
-    },
-    "testapi": {
-      "Type": "String"
     }
   },
   "Conditions": {
@@ -67,7 +64,7 @@
                           }
                         ]
                       },
-                      "/POST/doTest/*"
+                      "/POST/image/*"
                     ]
                   ]
                 },
@@ -97,7 +94,7 @@
                           }
                         ]
                       },
-                      "/POST/doTest"
+                      "/POST/image"
                     ]
                   ]
                 },
@@ -127,7 +124,7 @@
                           }
                         ]
                       },
-                      "/GET/doTest/*"
+                      "/GET/image/*"
                     ]
                   ]
                 },
@@ -157,7 +154,7 @@
                           }
                         ]
                       },
-                      "/GET/doTest"
+                      "/GET/image"
                     ]
                   ]
                 },
@@ -187,7 +184,7 @@
                           }
                         ]
                       },
-                      "/PUT/doTest/*"
+                      "/PUT/image/*"
                     ]
                   ]
                 },
@@ -217,7 +214,7 @@
                           }
                         ]
                       },
-                      "/PUT/doTest"
+                      "/PUT/image"
                     ]
                   ]
                 },
@@ -247,7 +244,7 @@
                           }
                         ]
                       },
-                      "/PATCH/doTest/*"
+                      "/PATCH/image/*"
                     ]
                   ]
                 },
@@ -277,7 +274,7 @@
                           }
                         ]
                       },
-                      "/PATCH/doTest"
+                      "/PATCH/image"
                     ]
                   ]
                 },
@@ -307,7 +304,7 @@
                           }
                         ]
                       },
-                      "/DELETE/doTest/*"
+                      "/DELETE/image/*"
                     ]
                   ]
                 },
@@ -337,7 +334,7 @@
                           }
                         ]
                       },
-                      "/DELETE/doTest"
+                      "/DELETE/image"
                     ]
                   ]
                 },
@@ -355,7 +352,7 @@
                       },
                       ":",
                       {
-                        "Ref": "testapi"
+                        "Ref": "imageapi"
                       },
                       "/",
                       {
@@ -367,7 +364,7 @@
                           }
                         ]
                       },
-                      "/POST/doTest/*"
+                      "/GET/greeting/*"
                     ]
                   ]
                 },
@@ -385,7 +382,7 @@
                       },
                       ":",
                       {
-                        "Ref": "testapi"
+                        "Ref": "imageapi"
                       },
                       "/",
                       {
@@ -397,247 +394,7 @@
                           }
                         ]
                       },
-                      "/POST/doTest"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "testapi"
-                      },
-                      "/",
-                      {
-                        "Fn::If": [
-                          "ShouldNotCreateEnvResources",
-                          "Prod",
-                          {
-                            "Ref": "env"
-                          }
-                        ]
-                      },
-                      "/GET/doTest/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "testapi"
-                      },
-                      "/",
-                      {
-                        "Fn::If": [
-                          "ShouldNotCreateEnvResources",
-                          "Prod",
-                          {
-                            "Ref": "env"
-                          }
-                        ]
-                      },
-                      "/GET/doTest"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "testapi"
-                      },
-                      "/",
-                      {
-                        "Fn::If": [
-                          "ShouldNotCreateEnvResources",
-                          "Prod",
-                          {
-                            "Ref": "env"
-                          }
-                        ]
-                      },
-                      "/PUT/doTest/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "testapi"
-                      },
-                      "/",
-                      {
-                        "Fn::If": [
-                          "ShouldNotCreateEnvResources",
-                          "Prod",
-                          {
-                            "Ref": "env"
-                          }
-                        ]
-                      },
-                      "/PUT/doTest"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "testapi"
-                      },
-                      "/",
-                      {
-                        "Fn::If": [
-                          "ShouldNotCreateEnvResources",
-                          "Prod",
-                          {
-                            "Ref": "env"
-                          }
-                        ]
-                      },
-                      "/PATCH/doTest/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "testapi"
-                      },
-                      "/",
-                      {
-                        "Fn::If": [
-                          "ShouldNotCreateEnvResources",
-                          "Prod",
-                          {
-                            "Ref": "env"
-                          }
-                        ]
-                      },
-                      "/PATCH/doTest"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "testapi"
-                      },
-                      "/",
-                      {
-                        "Fn::If": [
-                          "ShouldNotCreateEnvResources",
-                          "Prod",
-                          {
-                            "Ref": "env"
-                          }
-                        ]
-                      },
-                      "/DELETE/doTest/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:execute-api:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":",
-                      {
-                        "Ref": "testapi"
-                      },
-                      "/",
-                      {
-                        "Fn::If": [
-                          "ShouldNotCreateEnvResources",
-                          "Prod",
-                          {
-                            "Ref": "env"
-                          }
-                        ]
-                      },
-                      "/DELETE/doTest"
+                      "/GET/greeting"
                     ]
                   ]
                 }

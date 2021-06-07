@@ -34,20 +34,6 @@
           ]
         }
       ]
-    },
-    "testapi": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
-        {
-          "category": "function",
-          "resourceName": "imgprocLambdaFunc",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
-        }
-      ]
     }
   }
 }
