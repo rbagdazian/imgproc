@@ -1,7 +1,6 @@
 import json
 from test import testfunc
 from imgifce import imghandler
-from testFunc import doTest
 
 def handler(event, context):
   print('received event:')
@@ -12,8 +11,7 @@ def handler(event, context):
   # handler in the test.py file.
   dispatch = {
     '/greeting':testfunc, 
-    '/image':imghandler,
-    '/doTest':doTest
+    '/image':imghandler
   }
   
   # obtain the function from the dispatch table that
@@ -21,7 +19,8 @@ def handler(event, context):
   fcn = dispatch[event['path']]
   
   # call the handler function supplying any query string parameters
-  respMsg = fcn(event['queryStringParameters'])
+  #respMsg = fcn(event['queryStringParameters'])
+  respMsg = event['path'] + ' -> ' + event['queryStringParameters']
 
   # place the response into a body that will be jsonified
   body = {'message':respMsg}

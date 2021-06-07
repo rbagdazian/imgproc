@@ -74,7 +74,6 @@ function App() {
         <tr>
         <td><button onClick={fetchGreeting}>Get Greeting</button></td>
         <td><button onClick={fetchImage}>Get Image</button></td>
-        <td><button onClick={doTest}>Get Image</button></td>
         </tr>
         </table>
       </header>
