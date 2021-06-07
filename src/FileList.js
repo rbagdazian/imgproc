@@ -12,16 +12,20 @@ function FileList({files}){
         
     }
     
+
+    let val=0;
     return (
         <div>
         <h3>Available Files {fileList.length}</h3>
         <div className = 'file-list'>
+        <select id="fileset">
         {files.map(
             (file) => {
-                <span className ='file-list-item'><button onClick={handleClick}>{file}</button></span>
-            }   
+                <option value ={val++}>{file}</option>
+            }  
             )
         }
+        </select>
         </div>
         </div>
         )        

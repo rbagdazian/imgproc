@@ -91,15 +91,11 @@ async  function getFilenames(){
         {filenames}
         <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
+        <FileList files={filenames} />
 
         <div>---------------------------------</div>
         <table>
         <tr>
-        <td><button onClick={fetchGreeting}>Get Greeting</button></td>
-        <td><button onClick={cp1}>Checkpoint 1</button></td>
-        <td><button onClick={cp2}>Checkpoint 2</button></td>
-        <td><button onClick={cp3}>Checkpoint 3</button></td>
-        <td><button onClick={cp4}>Checkpoint 4</button></td>
         <td><button onClick={getFilenames}>Filenames</button></td>
         </tr>
         </table>
