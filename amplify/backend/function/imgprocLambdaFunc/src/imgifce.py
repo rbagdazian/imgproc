@@ -26,6 +26,8 @@ def imghandler(pqs):
         for object in object_summary_iterator:
             objlist.append(object)
         responseMsg = repr(objlist)
+    elif(cmd == 'debug'):
+        responseMsg = repr(pqs)
     elif(cmd == 'filenames'):
         objnames = []
         for object in object_summary_iterator:

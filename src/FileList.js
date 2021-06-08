@@ -4,7 +4,7 @@ import Amplify, { Storage } from 'aws-amplify';
 import {API} from 'aws-amplify'
 
 
-function FileList({files}, {selector}){
+function FileList({files}, {updater}){
     const [fileList, setFileList] = useState([]);
     const [fileUrl, setFileUrl] = useState([]);
     const [fileName, setFileName] = useState([]);
@@ -14,6 +14,12 @@ function FileList({files}, {selector}){
         const response = await API.get('imageapi',encodeURI('/image?cmd=delete&file='+fname));
         console.log(response.message);
       }
+      
+    async function rqDebug(fname){
+        const response = await API.get('imageapi',encodeURI('/image?cmd=debug&file='+fname));
+        console.log(response.message);
+    }
+      
 
     let fileListItems = files.map( 
             file => <option key={file} value={file}>{file}</option>
@@ -26,9 +32,14 @@ function FileList({files}, {selector}){
     
     function handleSubmit(event){
         alert('del was pressed: '+fileName);
-        delFile(fileName);
+        delFile(fileName, {updater});
         event.preventDefault();
     }
+    
+    function doDebug(event){
+        rqDebug(fileName);
+    }
+    
 
     let val=0;
     return (
@@ -41,6 +52,8 @@ function FileList({files}, {selector}){
             </select>
             <span>  </span>
             <input type="submit" value="Del" />            
+            <span>  </span>
+            <button onClick={doDebug}>Dbg</button>
         </form>
         ) : '' 
         }

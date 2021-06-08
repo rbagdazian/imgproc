@@ -80,6 +80,7 @@ async  function getFilenames(){
   function srcFileSelector(theRef){
     console.log(theRef);
   }
+  
 
   
   useEffect( () => {getFilenames()},[])
@@ -112,16 +113,13 @@ async  function getFilenames(){
         <FileDisplay state={curState} />
         <table>
         <tr>
-          <td><FileList files={filenames} selector={srcFileSelector} /></td>
-        </tr>
-        </table>
-        <div>---------------------------------</div>
-        <table>
-        <tr>
-        <td><button onClick={getFilenames}>Filenames</button></td>
+          <td><FileList files={filenames} updater={getFilenames} /></td>
         </tr>
         </table>
       </header>
+      <hr />
+      <p> Body goes here </p>
+      <br />
       <AmplifySignOut />      
     </div>
   );
