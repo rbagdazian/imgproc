@@ -5,6 +5,7 @@ from  processImage import processImage
     
 def imghandler(pqs):
     
+    s3Bucket = 'imgproc-data212120-staging'
     cmd = pqs['cmd']
     if(cmd == 'check1'):
         return 'checkpt 1'
@@ -12,7 +13,7 @@ def imghandler(pqs):
     s3 = boto3.resource('s3')
     if(cmd == 'check2'):
         return 'checkpt 2'
-    bucket = s3.Bucket('imgproc-data212120-staging')
+    bucket = s3.Bucket(s3Bucket)
     if(cmd == 'check3'):
         return 'checkpt 3'
     object_summary_iterator = bucket.objects.all()
@@ -44,11 +45,12 @@ def imghandler(pqs):
             filekey = object.key
             toks=re.split(r'/',filekey)
             if(toks[-1] == pqs['file']):
-                responseMsg = 'found file to delete'
+                s3.Object(s3Bucket, filekey).delete()
                 found = 1
+                responseMsg = 'File ' + pqs['file'] + ' was deleted.'
                 break
         if(found == 0):
-            responseMsg = 'file not found'
+            responseMsg =  'File ' + pqs['file'] + ' was not found.'
     elif(cmd == 'fcn'):
         # here to perform a specific function
         # the key specifies what function is to be performed
