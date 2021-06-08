@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import FileUpload from './FileUpload';
 import FileDisplay from './FileDisplay';
 import FileList from './FileList';
@@ -10,12 +10,14 @@ import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 import {API} from 'aws-amplify'
 
 
+
+
 function App() {
   const [curState, setCurState] = useState({valid:false, fileInfo:[]});
   const [loading, setLoading] = useState(false);  
   const [filenames, setFilenames] = useState([]);
   const [imageUrl, setImageUrl] = useState(null);
-  
+
   // function to send api call 2
   async function fetchGreeting(){
     console.log('in fetchGreeting');
@@ -49,9 +51,11 @@ async  function cp4(){
   }    
 
 async  function getFilenames(){
+    console.log('Requesting file names:');
     const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
-    console.log(response.message);
-    setFilenames(response.message);
+    const rm = response.message.slice(1,-1);
+    const ra = rm.split(',');
+    setFilenames(ra);
   }    
 
  async  function doTest(){
@@ -60,9 +64,17 @@ async  function getFilenames(){
     console.log(response.message);
     setFilenames(response.message);
   }
+  
+  function deleteFile(event){
+    console.log('in delete file');
+  }
+  
+  function srcFileSelector(theRef){
+    console.log(theRef);
+  }
 
   
-  //useEffect( () => {fetchGreeting()},[])
+  useEffect( () => {getFilenames()},[])
   
   const uploader = async (fb) => {
       const file = fb;
@@ -88,11 +100,13 @@ async  function getFilenames(){
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        {filenames}
         <FileUpload setter={setCurState} uploader={uploader} />
         <FileDisplay state={curState} />
-        <FileList files={filenames} />
-
+        <table>
+        <tr>
+          <td><FileList files={filenames} selector={srcFileSelector} /></td>
+        </tr>
+        </table>
         <div>---------------------------------</div>
         <table>
         <tr>

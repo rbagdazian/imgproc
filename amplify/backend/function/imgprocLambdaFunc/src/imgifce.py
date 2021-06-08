@@ -37,14 +37,24 @@ def imghandler(pqs):
         for object in object_summary_iterator:
             objcount += 1
         responseMsg = repr(objcount)
+    elif(cmd == 'delete'):
+        # user wants to delete a specific file as indicated in query parameter string
+        for object in object_summary_iterator:
+            filekey = object.key
+            toks=re.split(r'/',filekey)
+            if(toks[-1] == pqs['file']):
+                responseMsg = 'found file to delete'
+                break
+        responseMsg = 'file not found'
     elif(cmd == 'fcn'):
         # here to perform a specific function
         # the key specifies what function is to be performed
-        processImage(bucket,key,function)
-        function = qinfo['func'][0]
-        key = qinfo['key'][0]
+        function = pqs['func']
+        file = pqs['file']
+        #processImage(bucket,key,function)
+        responseMsg = 'not implemented yet'
     elif(cmd == 'nocmd'):
-        responseMsg = 'Could not find cmd parm: '+repr(qinfo)
+        responseMsg = 'Could not find cmd parm: '+repr(pqs)
     else:
         responseMsg = 'Error in image request command: ' + repr(pqs)
     
