@@ -55,8 +55,16 @@ async  function getFilenames(){
     const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
     const rm = response.message.slice(1,-1);
     const ra = rm.split(',');
-    setFilenames(ra);
-  }    
+    let fm = [];
+    for(var fn in ra){
+      let nfn = ra[fn].trim().slice(1,-1);
+      fm.push(nfn);
+    }
+    console.log(ra);
+    console.log('-----------------------------');
+    console.log(fm);
+    setFilenames(fm)
+  }
 
  async  function doTest(){
     console.log('in doTest');

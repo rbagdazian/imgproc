@@ -39,13 +39,16 @@ def imghandler(pqs):
         responseMsg = repr(objcount)
     elif(cmd == 'delete'):
         # user wants to delete a specific file as indicated in query parameter string
+        found = 0
         for object in object_summary_iterator:
             filekey = object.key
             toks=re.split(r'/',filekey)
             if(toks[-1] == pqs['file']):
                 responseMsg = 'found file to delete'
+                found = 1
                 break
-        responseMsg = 'file not found'
+        if(found == 0):
+            responseMsg = 'file not found'
     elif(cmd == 'fcn'):
         # here to perform a specific function
         # the key specifies what function is to be performed
