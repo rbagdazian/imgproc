@@ -83,12 +83,14 @@ async  function getFilenames(){
   
 
   
-  useEffect( () => {getFilenames()},[])
+  useEffect( () => {getFilenames()},[curState])
   
   const uploader = async (fb) => {
       const file = fb;
       const filename = curState.fileInfo.name;
       try {
+        console.log('CurrentState in uploader:');
+        console.log(curState);
         setLoading(true);
         // Upload the file to s3 with private access level. 
 

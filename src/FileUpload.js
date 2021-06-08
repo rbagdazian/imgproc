@@ -8,22 +8,23 @@ function FileUpload({setter, uploader}){
     
     
     const changeHandler = (event) => {
+        console.log('In changeHandler');
+        console.log(event.target.files);
         setSelectedFile(event.target.files[0]);
         setIsFilePicked(true);
         let urls = URL.createObjectURL(event.target.files[0]);
+        console.log('setting file urls to -> ');
+        console.log(urls)
         setFileBlob(urls);      
+        setter({isValid:isFilePicked, fileInfo:selectedFile, fileSrc:fileBlob},[]);
     }
     
     const handleSubmission = () => {
+        console.log('In handleSubmission');
         console.log(fileBlob);
-        setter({isValid:isFilePicked, fileInfo:selectedFile, fileSrc:fileBlob},[]);
-        uploader(selectedFile);
+        uploader();
     }
     
-    if(isFilePicked){
-        console.log(fileBlob);
-        console.log(selectedFile);
-    }
     
     return (
         <div>
