@@ -4,9 +4,9 @@ import re
 from  processImage import processImage
     
 def imghandler(pqs):
-    
+    pqsp = parse_qs(pqs)
     s3Bucket = 'imgproc-data212120-staging'
-    cmd = pqs['cmd']
+    cmd = pqsp['cmd']
     if(cmd == 'check1'):
         return 'checkpt 1'
     # Let's use Amazon S3
@@ -34,7 +34,8 @@ def imghandler(pqs):
             filekey=object.key
             toks=re.split(r'/', filekey)
             objnames.append([toks[-2], toks[-1]])
-        return repr(objnames)
+        resp = {'files': objnames}
+        return resp
     elif(cmd =='filecount'):
         objcount = 0
         for object in object_summary_iterator:
