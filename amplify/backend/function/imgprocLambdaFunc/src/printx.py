@@ -1,3 +1,3 @@
 
 def printx(s):
-    pass
+    print(s)
