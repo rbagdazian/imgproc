@@ -11,6 +11,7 @@ import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 import {API} from 'aws-amplify'
 
 
+
 function App() {
   const [uploadInfo, setUploadInfo] = useState({isValid: false});
   const [curFileName, setCurFileName] =useState('');
@@ -55,11 +56,17 @@ async  function getFilenames(){
     const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
     const rm = response.message.slice(1,-1);
     const ra = rm.split(',');
+    console.log('response message is:');
+    console.log(response.message);
+    const jss = JSON.parse(response.message);
+    console.log('parsed json string is:');
+    console.log(jss);
     console.log('remote file names returned are:');
     console.log(ra);
     let fm = [];
     for(var fn in ra){
-      let nfn = ra[fn].trim().slice(1,-1);
+      console.log(fn+' '+ra[fn]);
+      let nfn = ra[fn][1].trim().slice(1,-1);
       fm.push(nfn);
     }
     console.log(ra);

@@ -3,8 +3,8 @@ from test import testfunc
 from imgifce import imghandler
 
 def handler(event, context):
-  print('received event:')
-  print(event)
+  printx('received event:')
+  printx(event)
   
   # setup a single entry dictionary for now
   # to link the incoming path to the corresponding
@@ -20,6 +20,8 @@ def handler(event, context):
   
   # call the handler function supplying any query string parameters
   theQsDict = event['queryStringParameters']
+  printx('query string parms')
+  printx(repr(theQsDict))
   rs = fcn(theQsDict)
   respMsg = rs
 
@@ -40,3 +42,5 @@ def handler(event, context):
   # and send it on its way
   return response
   
+def printx(s):
+  pass
