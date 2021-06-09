@@ -5,10 +5,8 @@ from  processImage import processImage
 from printx import printx
     
 def imghandler(pqs):
-    pqsp = parse_qs(pqs)
-    printx('parsed sq:'+repr(pqsp))
     s3Bucket = 'imgproc-data212120-staging'
-    cmd = pqsp['cmd'][0]
+    cmd = pqs['cmd']
     printx('command is:'+cmd)
     if(cmd == 'check1'):
         return 'checkpt 1'
