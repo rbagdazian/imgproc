@@ -33,7 +33,7 @@ def imghandler(pqs):
         for object in object_summary_iterator:
             filekey=object.key
             toks=re.split(r'/', filekey)
-            objnames.append(toks[-1])
+            objnames.append([toks[-2], toks[-1]])
         return repr(objnames)
     elif(cmd =='filecount'):
         objcount = 0

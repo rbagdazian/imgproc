@@ -16,7 +16,7 @@ function FileDisplay({state}) {
             </div>
         ) : (
             <div>
-                <p>Not defined</p>
+                <p>___</p>
             </div>
         )
     );

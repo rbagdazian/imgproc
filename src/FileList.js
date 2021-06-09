@@ -4,57 +4,39 @@ import Amplify, { Storage } from 'aws-amplify';
 import {API} from 'aws-amplify'
 
 
-function FileList({files}, {updater}){
-    const [fileList, setFileList] = useState([]);
-    const [fileUrl, setFileUrl] = useState([]);
+function FileList({files, changer}){
     const [fileName, setFileName] = useState([]);
+    //const selectionRef = useRef();
     
-    async  function delFile(fname){
-        console.log('Deleting file names'+ fname);
-        const response = await API.get('imageapi',encodeURI('/image?cmd=delete&file='+fname));
-        console.log(response.message);
-      }
-      
-    async function rqDebug(fname){
-        const response = await API.get('imageapi',encodeURI('/image?cmd=debug&file='+fname));
-        console.log(response.message);
-    }
-      
 
     let fileListItems = files.map( 
-            file => <option key={file} value={file}>{file}</option>
+        file => <option key={file} value={file}>{file}</option>
     );
     
     function handleChange(event){
-        alert('change detected:'+event.target.value)
-        setFileName(event.target.value);
+        const fname = event.target.value;
+        selectionChanged(fname);
     }
     
-    function handleSubmit(event){
-        alert('del was pressed: '+fileName);
-        delFile(fileName, {updater});
-        event.preventDefault();
+    function selectionChanged(fname){
+        setFileName(fname);
+        changer(fname);
     }
     
-    function doDebug(event){
-        rqDebug(fileName);
-    }
-    
+    // first time only 
+    //useEffect( () => {console.log('useEffect-> '+fileName); selectionChanged(fileName)}, [selectionRef] );
 
+    
     let val=0;
     return (
         <div>
         {fileListItems.length > 0 ? (
-        <form onSubmit={handleSubmit}>
-            <label for="srcfile">Choose the input file: </label>
-            <select id="srcfile" onChange={handleChange}>
-                {fileListItems}
-            </select>
-            <span>  </span>
-            <input type="submit" value="Del" />            
-            <span>  </span>
-            <button onClick={doDebug}>Dbg</button>
-        </form>
+        <>
+        <label className="input-file-label" for="srcfile">Available files: </label>
+        <select id="srcfile" onChange={handleChange} >
+            {fileListItems}
+        </select>
+        </>
         ) : '' 
         }
         </div>

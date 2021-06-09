@@ -1,37 +1,30 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 
-function FileUpload({setter, uploader}){
-    const [selectedFile, setSelectedFile] = useState();
-    const [fileBlob, setFileBlob] = useState([]);
-    const [isFilePicked, setIsFilePicked] = useState(false);
-    
-    
+function FileUpload({uploader}){
+
     const changeHandler = (event) => {
-        console.log('In changeHandler');
-        console.log(event.target.files);
-        setSelectedFile(event.target.files[0]);
-        setIsFilePicked(true);
+        //console.log('In changeHandler');
+        let fblob = event.target.files[0];
+        //console.log(fblob);
+        const selectedFile = event.target.files[0];
+        const isFilePicked = true;
         let urls = URL.createObjectURL(event.target.files[0]);
-        console.log('setting file urls to -> ');
-        console.log(urls)
-        setFileBlob(urls);      
-        setter({isValid:isFilePicked, fileInfo:selectedFile, fileSrc:fileBlob},[]);
+        const fileBlob = urls;         
+        //console.log('setting file urls to -> ');
+        //console.log(fileBlob);
+        //console.log('calling setter function');
+        let newState = {isValid:isFilePicked, fileInfo:selectedFile, fileSrc:fileBlob};
+        //console.log('newVals are ->');        
+        //console.log(newState);        
+        uploader(newState);
+        //console.log('back from setter function');        
     }
-    
-    const handleSubmission = () => {
-        console.log('In handleSubmission');
-        console.log(fileBlob);
-        uploader();
-    }
-    
-    
+
+
     return (
         <div>
             <input type="file" name="file" onChange={changeHandler} />
-            <div>
-                <button onClick={handleSubmission}>Submit</button>
-            </div>
         </div>
         );
     }

@@ -3,6 +3,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import FileUpload from './FileUpload';
 import FileDisplay from './FileDisplay';
 import FileList from './FileList';
+import ImgProcRequestButtons from './ImgProcRequestButtons';
 
 import './App.css';
 import Amplify, { Storage } from 'aws-amplify';
@@ -10,10 +11,9 @@ import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 import {API} from 'aws-amplify'
 
 
-
-
 function App() {
-  const [curState, setCurState] = useState({valid:false, fileInfo:[]});
+  const [uploadInfo, setUploadInfo] = useState({isValid: false});
+  const [curFileName, setCurFileName] =useState('');
   const [loading, setLoading] = useState(false);  
   const [filenames, setFilenames] = useState([]);
   const [imageUrl, setImageUrl] = useState(null);
@@ -55,6 +55,8 @@ async  function getFilenames(){
     const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
     const rm = response.message.slice(1,-1);
     const ra = rm.split(',');
+    console.log('remote file names returned are:');
+    console.log(ra);
     let fm = [];
     for(var fn in ra){
       let nfn = ra[fn].trim().slice(1,-1);
@@ -63,8 +65,18 @@ async  function getFilenames(){
     console.log(ra);
     console.log('-----------------------------');
     console.log(fm);
-    setFilenames(fm)
+    setFilenames(fm);
+    setCurFileName(fm[0]);
   }
+  
+async  function delFile(){
+    const fname = curFileName;
+    //console.log('Deleting file names'+ fname);
+    const response = await API.get('imageapi',encodeURI('/image?cmd=delete&file='+fname));
+    updateFileNames();
+    //console.log('response was:'+response.message);
+  }
+  
 
  async  function doTest(){
     console.log('in doTest');
@@ -73,37 +85,47 @@ async  function getFilenames(){
     setFilenames(response.message);
   }
   
-  function deleteFile(event){
-    console.log('in delete file');
-  }
-  
   function srcFileSelector(theRef){
     console.log(theRef);
   }
   
-
+  function changeFile(fname){
+    setCurFileName(fname);
+  }
   
-  useEffect( () => {getFilenames()},[curState])
+  const updateFileNames = () =>{ setTimeout(getFilenames, 1000); };
   
-  const uploader = async (fb) => {
-      const file = fb;
-      const filename = curState.fileInfo.name;
+  useEffect( () => {updateFileNames()},[uploadInfo]);
+  
+  const uploader = async (newUploadInfo) => {
+      setUploadInfo(newUploadInfo);
+      console.log('CurrentState in uploader:');
+      console.log(newUploadInfo);
+      
+      const filename = 'input/'+newUploadInfo.fileInfo.name;
+      const fileBlob = newUploadInfo.fileSrc;
+      console.log('filename =');
+      console.log(filename);
       try {
-        console.log('CurrentState in uploader:');
-        console.log(curState);
         setLoading(true);
         // Upload the file to s3 with private access level. 
 
-        await Storage.put(filename, file);
+        await Storage.put(filename, fileBlob);
         
-        alert("Image was uploaded to s3!"+ filename);
         // Retrieve the uploaded file to display
         const url = await Storage.get(filename)
+        console.log("remote url for image is: "+url);
         setImageUrl(url);
         setLoading(false);
+        setCurFileName(filename);
       } catch (err) {
         console.log(err);
       }
+
+  }
+  
+  function handleImgProcRequest(buttonId){
+    console.log('Received image proc request:'+buttonId);
   }
   
 
@@ -111,17 +133,23 @@ async  function getFilenames(){
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <FileUpload setter={setCurState} uploader={uploader} />
-        <FileDisplay state={curState} />
+      </header>  
+      <body className="App-body">
+        <FileUpload uploader={uploader}/>
+        <FileDisplay state={uploadInfo} />
         <table>
+        <tbody>
         <tr>
-          <td><FileList files={filenames} updater={getFilenames} /></td>
+          <td><FileList files={filenames} changer={changeFile} deleter={delFile} /></td>
         </tr>
+        </tbody>
         </table>
-      </header>
-      <hr />
-      <p> Body goes here </p>
-      <br />
+        <form onSubmit={delFile}>
+        <span className="cur-file-name">Current Input File: &nbsp;&nbsp; {curFileName} <input type="submit" value="Del" /> </span>            
+        </form>
+        <ImgProcRequestButtons requestHandler={handleImgProcRequest} />
+        <br />
+      </body>
       <AmplifySignOut />      
     </div>
   );
