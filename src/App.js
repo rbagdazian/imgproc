@@ -54,34 +54,36 @@ async  function cp4(){
 async  function getFilenames(){
     console.log('Requesting file names:');
     const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
-    const rm = response.message.slice(1,-1);
-    const ra = rm.split(',');
-    console.log('response message is:');
-    console.log(response.message);
-    const jss = JSON.parse(response.message);
-    console.log('parsed json string is:');
-    console.log(jss);
-    console.log('remote file names returned are:');
-    console.log(ra);
+    const rm = response.message.files;
+    console.log(rm);
+
     let fm = [];
-    for(var fn in ra){
-      console.log(fn+' '+ra[fn]);
-      let nfn = ra[fn][1].trim().slice(1,-1);
-      fm.push(nfn);
+    
+    for(var fn in rm){
+        console.log(fn);
+        console.log(rm[fn][0]);
+        if(rm[fn][0] =='input'){
+          fn = rm[fn][1]
+          console.log('have input file:'+ fn )
+          fm.push(fn)
+        }
+        
+//      console.log(fn+' '+ra[fn]);
+//      let nfn = ra[fn][1].trim().slice(1,-1);
+//      fm.push(nfn);
     }
-    console.log(ra);
-    console.log('-----------------------------');
     console.log(fm);
     setFilenames(fm);
     setCurFileName(fm[0]);
   }
   
-async  function delFile(){
+async  function delFile(e){
+    e.preventDefault();
     const fname = curFileName;
-    //console.log('Deleting file names'+ fname);
-    const response = await API.get('imageapi',encodeURI('/image?cmd=delete&file='+fname));
+    console.log('Deleting file names: input/'+ curFileName);
+    const response = await API.get('imageapi',encodeURI('/image?cmd=delete&file=input/'+curFileName));
+    console.log('response was:'+response.message);
     updateFileNames();
-    //console.log('response was:'+response.message);
   }
   
 
@@ -147,7 +149,7 @@ async  function delFile(){
         <table>
         <tbody>
         <tr>
-          <td><FileList files={filenames} changer={changeFile} deleter={delFile} /></td>
+          <td><FileList files={filenames} changer={changeFile} /></td>
         </tr>
         </tbody>
         </table>

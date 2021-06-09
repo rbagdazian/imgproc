@@ -49,7 +49,9 @@ def imghandler(pqs):
         for object in object_summary_iterator:
             filekey = object.key
             toks=re.split(r'/',filekey)
-            if(toks[-1] == pqs['file']):
+            printx(toks)
+            printx(pqs['file'])
+            if(toks[-2] == 'input' and toks[-1] == pqs['file']):
                 s3.Object(s3Bucket, filekey).delete()
                 found = 1
                 responseMsg = 'File ' + pqs['file'] + ' was deleted.'
