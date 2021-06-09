@@ -46,7 +46,11 @@ def imghandler(pqs):
     elif(cmd == 'delete'):
         # user wants to delete a specific file as indicated in query parameter string
         found = 0
+        passv = 1
+        printx('in delete handler')
         for object in object_summary_iterator:
+            printx(passv)
+            passv=passv+1
             filekey = object.key
             toks=re.split(r'/',filekey)
             printx(toks)
@@ -56,6 +60,7 @@ def imghandler(pqs):
                 found = 1
                 responseMsg = 'File ' + pqs['file'] + ' was deleted.'
                 break
+        printx('done with loop, found='+found)
         if(found == 0):
             responseMsg =  'File ' + pqs['file'] + ' was not found.'
     elif(cmd == 'fcn'):
