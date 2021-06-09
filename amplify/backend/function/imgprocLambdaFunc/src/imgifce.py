@@ -2,11 +2,14 @@ import boto3
 from urllib.parse import urlparse, parse_qs
 import re
 from  processImage import processImage
+from printx import printx
     
 def imghandler(pqs):
     pqsp = parse_qs(pqs)
+    printx('parsed sq:'+repr(pqsp))
     s3Bucket = 'imgproc-data212120-staging'
-    cmd = pqsp['cmd']
+    cmd = pqsp['cmd'][0]
+    printx('command is:'+cmd)
     if(cmd == 'check1'):
         return 'checkpt 1'
     # Let's use Amazon S3
@@ -35,6 +38,7 @@ def imghandler(pqs):
             toks=re.split(r'/', filekey)
             objnames.append([toks[-2], toks[-1]])
         resp = {'files': objnames}
+        printx('response is: '+repr(resp))
         return resp
     elif(cmd =='filecount'):
         objcount = 0

@@ -1,6 +1,7 @@
 import json
 from test import testfunc
 from imgifce import imghandler
+from printx import printx
 
 def handler(event, context):
   printx('received event:')
@@ -22,9 +23,11 @@ def handler(event, context):
   theQsDict = event['queryStringParameters']
   printx('query string parms')
   printx(repr(theQsDict))
+  printx('calling dispatch func')
   rs = fcn(theQsDict)
   respMsg = rs
-
+  printx('response from imgifce is:')
+  printx(repr(respMsg))
   # place the response into a body that will be jsonified
   body = {'message':respMsg}
   
@@ -41,6 +44,3 @@ def handler(event, context):
   
   # and send it on its way
   return response
-  
-def printx(s):
-  pass
