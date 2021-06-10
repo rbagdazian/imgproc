@@ -67,9 +67,23 @@ def imghandler(pqs):
         # here to perform a specific function
         # the key specifies what function is to be performed
         function = pqs['func']
-        file = pqs['file']
-        #processImage(bucket,key,function)
-        responseMsg = 'not implemented yet'
+        targetFileToks = re.split(r'/',pqs['file']) 
+        found=0
+        passv = 1
+        for object in object_summary_iterator:
+            printx(passv)
+            passv=passv+1
+            filekey = object.key
+            toks=re.split(r'/',filekey)
+            printx(toks)
+            printx(pqs['file'])
+            if(toks[-2] == 'input' and toks[-1] == targetFileToks[-1]):
+                found=1
+                break
+        if(found == 1):
+            responseMsg = "found file for processing" + targetFileToks[-2]+' '+ targetFileToks[-1] + ' ' + function
+        else:
+            responseMsg = "requested file was not found"
     elif(cmd == 'nocmd'):
         responseMsg = 'Could not find cmd parm: '+repr(pqs)
     else:

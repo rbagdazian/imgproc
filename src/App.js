@@ -133,8 +133,22 @@ async  function delFile(e){
 
   }
   
-  function handleImgProcRequest(buttonId){
-    console.log('Received image proc request:'+buttonId);
+  async function handleImgProcRequest(buttonId){
+    console.log('in handleImgProcRequest')
+    const funcDict={
+      1: 'MONO',
+      2: 'LPF',
+      3: 'UNSHARP',
+      4: 'SOBEL_ED',
+      5: 'GAUSS_ED'
+    }
+    const funcStr = funcDict[buttonId]
+    console.log('process request for:'+funcStr)
+    console.log('current file: '+curFileName)
+    const rqStr = '/image?cmd=fcn&func='+funcStr+'&'+'file=input/'+curFileName
+    console.log(rqStr)
+    const response = await API.get('imageapi',encodeURI(rqStr));
+    console.log(response.message);
   }
   
 
