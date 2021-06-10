@@ -26,7 +26,7 @@ def handler(event, context):
   printx('calling dispatch func')
   rs = fcn(theQsDict)
   respMsg = rs
-  printx('response from imgifce is:')
+  printx('response from imgifce is: ')
   printx(repr(respMsg))
   # place the response into a body that will be jsonified
   body = {'message':respMsg}

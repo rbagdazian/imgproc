@@ -154,7 +154,7 @@ async  function delFile(e){
         </tbody>
         </table>
         <form onSubmit={delFile}>
-        <span className="cur-file-name">Current Input File: &nbsp;&nbsp; {curFileName} <input type="submit" value="Del" /> </span>            
+        <span className="cur-file-name">Current Input File: &nbsp;&nbsp;&nbsp; {curFileName} <input type="submit" value="Del" /> </span>            
         </form>
         <ImgProcRequestButtons requestHandler={handleImgProcRequest} />
         <br />

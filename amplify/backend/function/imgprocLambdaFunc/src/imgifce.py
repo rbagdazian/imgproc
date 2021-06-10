@@ -47,7 +47,7 @@ def imghandler(pqs):
         # user wants to delete a specific file as indicated in query parameter string
         found = 0
         passv = 1
-        printx('in delete handler')
+        printx('in delete handler->')
         targetFileToks = re.split(r'/',pqs['file'])
         for object in object_summary_iterator:
             printx(passv)
