@@ -48,6 +48,7 @@ def imghandler(pqs):
         found = 0
         passv = 1
         printx('in delete handler')
+        targetFileToks = re.split(r'/',pqs['file'])
         for object in object_summary_iterator:
             printx(passv)
             passv=passv+1
@@ -55,7 +56,7 @@ def imghandler(pqs):
             toks=re.split(r'/',filekey)
             printx(toks)
             printx(pqs['file'])
-            if(toks[-2] == 'input' and toks[-1] == pqs['file']):
+            if(toks[-2] == 'input' and toks[-1] == targetFileToks[-1]):
                 s3.Object(s3Bucket, filekey).delete()
                 found = 1
                 responseMsg = 'File ' + pqs['file'] + ' was deleted.'
