@@ -61,7 +61,6 @@ def imghandler(pqs):
                 found = 1
                 responseMsg = 'File ' + pqs['file'] + ' was deleted.'
                 break
-        printx('done with loop, found='+found)
         if(found == 0):
             responseMsg =  'File ' + pqs['file'] + ' was not found.'
     elif(cmd == 'fcn'):
