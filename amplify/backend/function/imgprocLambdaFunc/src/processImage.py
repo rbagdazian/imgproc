@@ -31,7 +31,7 @@ def processImage(theBucket, theObject, filekey,function):
 
     processResults = sp.run(["ls","-al"],capture_output=True)
     printx(processResults.stdout.decode('utf-8'))
-    processResults = sp.run(["convert","srcFile.jpg", "-negate", "srcFile_out.jpg"],capture_output=True)
+    processResults = sp.run(["convert","srcFile.jpg", ("-"+function), "srcFile_out.jpg"],capture_output=True)
     printx(processResults.stdout.decode('utf-8'))
     processResults = sp.run(["ls","-al"],capture_output=True)
     printx(processResults.stdout.decode('utf-8'))

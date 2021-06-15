@@ -144,7 +144,7 @@ async  function delFile(e){
   async function handleImgProcRequest(buttonId){
     console.log('in handleImgProcRequest')
     const funcDict={
-      1: 'MONO',
+      1: 'negate',
       2: 'LPF',
       3: 'UNSHARP',
       4: 'SOBEL_ED',

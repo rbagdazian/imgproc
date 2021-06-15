@@ -8,8 +8,8 @@ import os
 
 def imghandler(pqs):
     s3Bucket = 'imgproc-data212120-staging'
-    pqsd = parse_qs(pqs)
     try:
+        pqsd = parse_qs(pqs)
         cmd = pqsd['cmd'][0]
     except:
         cmd = pqs['cmd']

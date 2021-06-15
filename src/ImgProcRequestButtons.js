@@ -14,7 +14,7 @@ function ImgProcRequestButtons({requestHandler}) {
         <table>
         <tbody>
         <tr>
-        <td><button onClick={br1}> Monochrome </button></td>
+        <td><button onClick={br1}> Invert </button></td>
         <td><button onClick={br2}> Low Pass </button></td>
         <td><button onClick={br3}> Unsharp </button></td>
         <td><button onClick={br4}> Sobel E.D. </button></td>
