@@ -106,23 +106,31 @@ async  function delFile(e){
   
   useEffect( () => {updateFileNames()},[uploadInfo]);
   
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }  
+  
   const uploader = async (newUploadInfo) => {
+    
+      // file info is contained in newUploadInfo.fileInfo
       setUploadInfo(newUploadInfo);
       console.log('CurrentState in uploader:');
       console.log(newUploadInfo);
       
       const filename = 'input/'+newUploadInfo.fileInfo.name;
-      const fileBlob = newUploadInfo.fileSrc;
-      console.log('filename =');
-      console.log(filename);
+      const file = newUploadInfo.fileInfo;
+      console.log('filename =' + filename);
+      console.log(file);
       try {
         setLoading(true);
-        // Upload the file to s3 with private access level. 
+		    console.log('-----------------');
+		    console.log(Object.keys(file));
+		    console.log('-----------------');
 
-        await Storage.put(filename, fileBlob);
+        await Storage.put(filename, file );
         
         // Retrieve the uploaded file to display
-        const url = await Storage.get(filename)
+        const url = await Storage.get(filename);
         console.log("remote url for image is: "+url);
         setImageUrl(url);
         setLoading(false);

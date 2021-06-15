@@ -3,11 +3,19 @@ from urllib.parse import urlparse, parse_qs
 import re
 from  processImage import processImage
 from printx import printx
-    
+import subprocess as sp
+import os
+
 def imghandler(pqs):
     s3Bucket = 'imgproc-data212120-staging'
-    cmd = pqs['cmd']
-    printx('command is:'+cmd)
+    pqsd = parse_qs(pqs)
+    try:
+        cmd = pqsd['cmd'][0]
+    except:
+        cmd = pqs['cmd']
+    finally:
+        pass
+    printx('command is:'+ repr(cmd))
     if(cmd == 'check1'):
         return 'checkpt 1'
     # Let's use Amazon S3
@@ -57,7 +65,7 @@ def imghandler(pqs):
             printx(toks)
             printx(pqs['file'])
             if(toks[-2] == 'input' and toks[-1] == targetFileToks[-1]):
-                s3.Object(s3Bucket, filekey).delete()
+                s3.Object(bucket, filekey).delete()
                 found = 1
                 responseMsg = 'File ' + pqs['file'] + ' was deleted.'
                 break
@@ -66,8 +74,22 @@ def imghandler(pqs):
     elif(cmd == 'fcn'):
         # here to perform a specific function
         # the key specifies what function is to be performed
-        function = pqs['func']
-        targetFileToks = re.split(r'/',pqs['file']) 
+        try:
+            function = pqsd['func'][0]
+        except:
+            function = pqs['func']
+        finally:
+            pass
+        
+        try:
+            filenm = pqsd['file'][0]
+        except:
+            filenm = pqs['file']
+        finally:
+            pass
+        
+    
+        targetFileToks = re.split(r'/',filenm) 
         found=0
         passv = 1
         for object in object_summary_iterator:
@@ -75,22 +97,32 @@ def imghandler(pqs):
             passv=passv+1
             filekey = object.key
             toks=re.split(r'/',filekey)
+            printx('filekey is:')
+            printx(filekey)
             printx(toks)
-            printx(pqs['file'])
+            printx(filenm)
+            theObject = []
             if(toks[-2] == 'input' and toks[-1] == targetFileToks[-1]):
-                found=1
+                theObject = object
                 break
-        if(found == 1):
-            responseMsg = "found file for processing" + targetFileToks[-2]+' '+ targetFileToks[-1] + ' ' + function
+        if(theObject != []):
+            responseMsg = processImage(bucket, theObject, filekey, function )
         else:
             responseMsg = "requested file was not found"
+    elif(cmd=='test'):
+        # here we want to spawn a child subprocess to invoke an
+        # imageMagick function
+        
+        #result=sp.run(['convert', '-list','gravity'], capture_output=True)
+        result=sp.run(['ls','-al','/tmp'],capture_output=True)
+        outmsg = "stdout: " + result.stdout.decode('utf-8') + " stderr: "+result.stderr.decode('utf-8')
+        printx(outmsg)
+        responseMsg = outmsg
+        
     elif(cmd == 'nocmd'):
         responseMsg = 'Could not find cmd parm: '+repr(pqs)
     else:
         responseMsg = 'Error in image request command: ' + repr(pqs)
     
     return responseMsg
-    # Print out bucket names
-    #bucketList = []
-    #for bucket in buckets
-    #    bucketList.append(bucket)    
+   
