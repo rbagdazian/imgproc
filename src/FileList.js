@@ -4,7 +4,7 @@ import Amplify, { Storage } from 'aws-amplify';
 import {API} from 'aws-amplify'
 
 
-function FileList({files, changer}){
+function FileList({files, changer, refx}){
     const [fileName, setFileName] = useState([]);
     //const selectionRef = useRef();
     
@@ -33,7 +33,7 @@ function FileList({files, changer}){
         {fileListItems.length > 0 ? (
         <>
         <label className="input-file-label" for="srcfile">Available files: </label>
-        <select id="srcfile" onChange={handleChange} >
+        <select id="srcfile" onChange={handleChange} ref={refx} >
             {fileListItems}
         </select>
         </>

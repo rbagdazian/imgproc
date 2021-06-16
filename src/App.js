@@ -17,7 +17,10 @@ function App() {
   const [curFileName, setCurFileName] =useState('');
   const [loading, setLoading] = useState(false);  
   const [filenames, setFilenames] = useState([]);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [curFileInfo, setCurFileInfo] = useState({isValid: false});
+  const [showUpload, setShowUpload] = useState(false);
+  const fileListRef = useRef();
+  const [outputImgInfo, setOutputImgInfo] = useState({isValid:false});
 
   // function to send api call 2
   async function fetchGreeting(){
@@ -73,8 +76,11 @@ async  function getFilenames(){
 //      fm.push(nfn);
     }
     console.log(fm);
+    const url = await Storage.get('input/'+fm[0]);
+    let newState = {isValid:true, fileInfo:'input/'+fm[0], fileSrc: url}; 
     setFilenames(fm);
     setCurFileName(fm[0]);
+    setCurFileInfo(newState);
   }
   
 async  function delFile(e){
@@ -94,12 +100,14 @@ async  function delFile(e){
     setFilenames(response.message);
   }
   
-  function srcFileSelector(theRef){
-    console.log(theRef);
-  }
-  
-  function changeFile(fname){
+  async function changeFile(fname){
+    const url = await Storage.get('input/'+fname)
+    console.log("remote url for image is: "+url);
+    let newState = {isValid:true, fileInfo:fname, fileSrc: url};    
+    console.log(newState);
     setCurFileName(fname);
+    setCurFileInfo(newState);
+    setShowUpload(false);
   }
   
   const updateFileNames = () =>{ setTimeout(getFilenames, 1000); };
@@ -114,6 +122,7 @@ async  function delFile(e){
     
       // file info is contained in newUploadInfo.fileInfo
       setUploadInfo(newUploadInfo);
+      setShowUpload(true);
       console.log('CurrentState in uploader:');
       console.log(newUploadInfo);
       
@@ -132,7 +141,6 @@ async  function delFile(e){
         // Retrieve the uploaded file to display
         const url = await Storage.get(filename);
         console.log("remote url for image is: "+url);
-        setImageUrl(url);
         setLoading(false);
         setCurFileName(filename);
       } catch (err) {
@@ -157,9 +165,12 @@ async  function delFile(e){
     console.log(rqStr)
     const response = await API.get('imageapi',encodeURI(rqStr));
     console.log(response.message);
+    const url = await Storage.get(response.message)
+    let newState = {isValid:true, fileInfo:response.message, fileSrc: url};
+    setOutputImgInfo(newState);
   }
   
-
+  
   return (
     <div className="App">
       <header className="App-header">
@@ -167,18 +178,20 @@ async  function delFile(e){
       </header>  
       <body className="App-body">
         <FileUpload uploader={uploader}/>
-        <FileDisplay state={uploadInfo} />
+        <FileDisplay state={uploadInfo} full={true} enable={showUpload} imgClass='file-display-img-sm' />
         <table>
         <tbody>
         <tr>
-          <td><FileList files={filenames} changer={changeFile} /></td>
+          <td><FileList files={filenames} changer={changeFile} refx={fileListRef} /></td>
         </tr>
         </tbody>
         </table>
         <form onSubmit={delFile}>
         <span className="cur-file-name">Current Input File: &nbsp;&nbsp;&nbsp; {curFileName} <input type="submit" value="Del" /> </span>            
+        <FileDisplay state={curFileInfo} full={false} enable = {true} imgClass='file-display-img-large' />
         </form>
         <ImgProcRequestButtons requestHandler={handleImgProcRequest} />
+        <FileDisplay state={outputImgInfo} full={false} enable ={true} imgClass='file-display-img-large' />
         <br />
       </body>
       <AmplifySignOut />      

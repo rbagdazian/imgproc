@@ -48,9 +48,18 @@
   }
 }
 
-.file-display-img{
+.file-display-img-sm{
   height: 10vmin;
 }
+
+.file-display-img-med{
+  height: 20vmin;
+}
+
+.file-display-img-large{
+  height: 30vmin;
+}
+
 
 .file-display{
   font-size: 10pt;

@@ -8,10 +8,11 @@ function FileUpload({uploader}){
   }     
 
     const changeHandler = (event) => {
-        //console.log('In changeHandler');
+        console.log('In changeHandler');
         let fblob = event.target.files[0];
         //console.log(fblob);
         const selectedFile = event.target.files[0];
+        console.log('selected file info :' + selectedFile)
         const isFilePicked = true;
         const fileUrl= URL.createObjectURL(event.target.files[0])
         let newState = {isValid:isFilePicked, fileInfo:selectedFile, fileSrc: fileUrl};

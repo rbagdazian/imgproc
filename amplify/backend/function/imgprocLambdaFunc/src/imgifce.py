@@ -51,6 +51,7 @@ def imghandler(pqs):
         for object in object_summary_iterator:
             objcount += 1
         responseMsg = repr(objcount)
+
     elif(cmd == 'delete'):
         # user wants to delete a specific file as indicated in query parameter string
         found = 0
@@ -65,7 +66,10 @@ def imghandler(pqs):
             printx(toks)
             printx(pqs['file'])
             if(toks[-2] == 'input' and toks[-1] == targetFileToks[-1]):
-                s3.Object(bucket, filekey).delete()
+                printx("deleting...")
+                printx(repr(filekey))
+                printx(repr(bucket))
+                s3.Object(s3Bucket, filekey).delete()
                 found = 1
                 responseMsg = 'File ' + pqs['file'] + ' was deleted.'
                 break

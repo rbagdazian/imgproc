@@ -52,7 +52,8 @@ def processImage(theBucket, theObject, filekey,function):
 
     #responseMsg ='processing Image: ' + filekey + ' ' + function + ' ' + repr(type(image))  + ' keys-> '+ repr(keyList) +' '+'Body size ~ ' + '{0:d}'.format(bodysize) + 'Content Length =' + repr(image['ContentLength']) + 'body type='+bodytype + 'body header='+bodyHeaderStr
     #responseMsg ='processing Image: ' + filekey + ' ' + function + ' ' + 'Content Length =' + repr(image['ContentLength'])
-    responseMsg = filekey2
+    toks = filekey2.split('/')
+    responseMsg = 'output/'+toks[-1]
     printx('response message is ->'+responseMsg)
     os.chdir(curdir)
     return responseMsg
