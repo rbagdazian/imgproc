@@ -1,14 +1,16 @@
 import logo from './logo.svg';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, Component} from 'react';
 import FileUpload from './FileUpload';
 import FileDisplay from './FileDisplay';
 import FileList from './FileList';
 import ImgProcRequestButtons from './ImgProcRequestButtons';
+import SaveImage from './SaveImage';
+import UserInfo from './UserInfo';
 
 import './App.css';
 import Amplify, { Storage } from 'aws-amplify';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
-import {API} from 'aws-amplify'
+import {API, Auth} from 'aws-amplify'
 
 
 
@@ -21,6 +23,7 @@ function App() {
   const [showUpload, setShowUpload] = useState(false);
   const fileListRef = useRef();
   const [outputImgInfo, setOutputImgInfo] = useState({isValid:false});
+  const [currentUserName, setCurrentUserName] = useState('');
 
   // function to send api call 2
   async function fetchGreeting(){
@@ -55,8 +58,11 @@ async  function cp4(){
   }    
 
 async  function getFilenames(){
-    console.log('Requesting file names:');
-    const response = await API.get('imageapi',encodeURI('/image?cmd=filenames'));
+    const userInfo = await Auth.currentUserInfo();
+    const userName = userInfo['username'];
+    setCurrentUserName(userName);
+    console.log('Requesting file names for user:'+userName);
+    const response = await API.get('imageapi',encodeURI('/image?cmd=filenames&username='+userName));
     const rm = response.message.files;
     console.log(rm);
 
@@ -76,8 +82,8 @@ async  function getFilenames(){
 //      fm.push(nfn);
     }
     console.log(fm);
-    const url = await Storage.get('input/'+fm[0]);
-    let newState = {isValid:true, fileInfo:'input/'+fm[0], fileSrc: url}; 
+    const url = await Storage.get(userName+'/input/'+fm[0]);
+    let newState = {isValid:true, fileInfo: 'input/'+fm[0], fileSrc: url}; 
     setFilenames(fm);
     setCurFileName(fm[0]);
     setCurFileInfo(newState);
@@ -101,8 +107,8 @@ async  function delFile(e){
   }
   
   async function changeFile(fname){
-    const url = await Storage.get('input/'+fname)
-    console.log("remote url for image is: "+url);
+    const url = await Storage.get(currentUserName+'/input/'+fname)
+    console.log("in ChangeFile remote url for image is: "+url);
     let newState = {isValid:true, fileInfo:fname, fileSrc: url};    
     console.log(newState);
     setCurFileName(fname);
@@ -125,8 +131,8 @@ async  function delFile(e){
       setShowUpload(true);
       console.log('CurrentState in uploader:');
       console.log(newUploadInfo);
-      
-      const filename = 'input/'+newUploadInfo.fileInfo.name;
+      console.log('attempting to load:'+currentUserName+'/input/'+newUploadInfo.fileInfo.name);
+      const filename = currentUserName+'/input/'+newUploadInfo.fileInfo.name;
       const file = newUploadInfo.fileInfo;
       console.log('filename =' + filename);
       console.log(file);
@@ -149,19 +155,47 @@ async  function delFile(e){
 
   }
   
+  const saveFile = async () => {
+      const s3filename = currentUserName+'/output/'+curFileName;
+      const s3url = await Storage.get(s3filename);
+      const dloadName = 'out'+curFileName;
+      download(s3url,dloadName);
+    };
+  
+
+  const download = (url, dloadName) => {
+    fetch(url)
+      .then(response => {
+        response.arrayBuffer().then(function(buffer) {
+          const url = window.URL.createObjectURL(new Blob([buffer]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", dloadName); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  
+  
+      
   async function handleImgProcRequest(buttonId){
     console.log('in handleImgProcRequest')
     const funcDict={
       1: 'negate',
-      2: 'LPF',
-      3: 'UNSHARP',
-      4: 'SOBEL_ED',
-      5: 'GAUSS_ED'
+      2: 'mono',
+      3: 'gaussian',
+      4: 'edge',
+      5: 'unsharp'
     }
     const funcStr = funcDict[buttonId]
     console.log('process request for:'+funcStr)
+    console.log('current user is:'+currentUserName)
     console.log('current file: '+curFileName)
-    const rqStr = '/image?cmd=fcn&func='+funcStr+'&'+'file=input/'+curFileName
+    const rqStr = '/image?cmd=fcn&func='+funcStr+'&'+'file='+currentUserName+'/input/'+curFileName
     console.log(rqStr)
     const response = await API.get('imageapi',encodeURI(rqStr));
     console.log(response.message);
@@ -175,6 +209,7 @@ async  function delFile(e){
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <p className='small-font'> {currentUserName} </p>
       </header>  
       <body className="App-body">
         <FileUpload uploader={uploader}/>
@@ -192,6 +227,7 @@ async  function delFile(e){
         </form>
         <ImgProcRequestButtons requestHandler={handleImgProcRequest} />
         <FileDisplay state={outputImgInfo} full={false} enable ={true} imgClass='file-display-img-large' />
+        <SaveImage saver={saveFile} />
         <br />
       </body>
       <AmplifySignOut />      

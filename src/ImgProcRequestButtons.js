@@ -15,10 +15,10 @@ function ImgProcRequestButtons({requestHandler}) {
         <tbody>
         <tr>
         <td><button onClick={br1}> Invert </button></td>
-        <td><button onClick={br2}> Low Pass </button></td>
-        <td><button onClick={br3}> Unsharp </button></td>
-        <td><button onClick={br4}> Sobel E.D. </button></td>
-        <td><button onClick={br5}> Gauss E.D. </button></td>
+        <td><button onClick={br2}> Monochrome </button></td>
+        <td><button onClick={br3}> Blur </button></td>
+        <td><button onClick={br4}> Canny E.D. </button></td>
+        <td><button onClick={br5}> Unsharp </button></td>
         </tr>            
         </tbody>
         </table>

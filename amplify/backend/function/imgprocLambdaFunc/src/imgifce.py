@@ -16,15 +16,33 @@ def imghandler(pqs):
     finally:
         pass
     printx('command is:'+ repr(cmd))
+    
+    try:
+        username = pqsd['username'][0]
+    except:
+        try:
+            username = pqs['username']
+        except:
+            username = ''
+        finally:
+            pass
+    finally:
+        pass
+    printx('username is: ' + repr(username))
+    
     if(cmd == 'check1'):
         return 'checkpt 1'
     # Let's use Amazon S3
     s3 = boto3.resource('s3')
+    s3client = boto3.client('s3')
     if(cmd == 'check2'):
         return 'checkpt 2'
     bucket = s3.Bucket(s3Bucket)
     if(cmd == 'check3'):
         return 'checkpt 3'
+    prefix = 'public/'+username
+    printx('requesting files for: '+ prefix)
+    userInputObjects = s3client.list_objects_v2(Bucket=s3Bucket, Prefix=prefix)
     object_summary_iterator = bucket.objects.all()
     if(cmd == 'check4'):
         return 'checkpt 4'
@@ -38,9 +56,21 @@ def imghandler(pqs):
     elif(cmd == 'debug'):
         responseMsg = repr(pqs)
     elif(cmd == 'filenames'):
+        printx(repr(userInputObjects))
+        userObjectKeys = userInputObjects.keys()
+        try:
+            userObjects = userInputObjects['Contents']
+        except:
+            resp = {'files': []}
+            return resp
+        
+        printx(repr(userObjects))
+        printx('userObjects count ='+ str(len(userObjects) ))
         objnames = []
-        for object in object_summary_iterator:
-            filekey=object.key
+        for object in userObjects:
+        #for object in object_summary_iterator:
+            filekey=object['Key']
+            #printx(repr(filekey))
             toks=re.split(r'/', filekey)
             objnames.append([toks[-2], toks[-1]])
         resp = {'files': objnames}
