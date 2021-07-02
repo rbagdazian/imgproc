@@ -209,6 +209,7 @@ async  function delFile(e){
       // here we process a request for an image classification via the api endpoint
       const response = await fetch("https://zr84qort75.execute-api.us-east-1.amazonaws.com/Prod/classify_digit", {
       method: 'POST',
+      mode: 'no-cors',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
