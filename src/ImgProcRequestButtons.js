@@ -8,6 +8,7 @@ function ImgProcRequestButtons({requestHandler}) {
     const br3 = () => requestHandler(3);
     const br4 = () => requestHandler(4);
     const br5 = () => requestHandler(5);
+    const br6 = () => requestHandler(6);
     
     return (
         <div className="img-proc-request-buttons">
@@ -19,6 +20,7 @@ function ImgProcRequestButtons({requestHandler}) {
         <td><button onClick={br3}> Blur </button></td>
         <td><button onClick={br4}> Canny E.D. </button></td>
         <td><button onClick={br5}> Unsharp </button></td>
+        <td><button onClick={br6}> Img Class </button></td>
         </tr>            
         </tbody>
         </table>
