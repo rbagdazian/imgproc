@@ -210,7 +210,6 @@ async  function delFile(e){
       console.log('sending request for image classification');
       const response = await fetch("https://zr84qort75.execute-api.us-east-1.amazonaws.com/Prod/classify_digit", {
       method: 'POST',
-      mode: 'no-cors',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
