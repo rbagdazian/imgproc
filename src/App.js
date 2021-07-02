@@ -209,8 +209,8 @@ async  function delFile(e){
       // here we process a request for an image classification via the api endpoint
       console.log('sending request for image classification');
 
-      const apiName = 'classify_digit';
-      const path = ''; 
+      const apiName = 'imageclass';
+      const path = '/'; 
       const myInit = { // OPTIONAL
           headers: {
             'Accept': 'application/json',

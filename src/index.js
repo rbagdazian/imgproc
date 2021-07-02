@@ -8,14 +8,19 @@ import config from './aws-exports';
 Amplify.configure(config);
 Amplify.configure({
   API: {
-    endpoints: [
+    "aws_cloud_logic_custom": [
       {
-        name: "classify_digit",
-        endpoint:
-          "https://zr84qort75.execute-api.us-east-1.amazonaws.com/Prod/classify_digit",
+        "name" : "imageclass",
+        "endpoint" : "https://zr84qort75.execute-api.us-east-1.amazonaws.com/Prod/classify_digit",
+        "region": "us-east-1"
       },
+      {
+          "name": "imageapi",
+          "endpoint": "https://d7oqdnlrrf.execute-api.us-east-1.amazonaws.com/staging",
+          "region": "us-east-1"
+      }      
     ],
-  },
+  }
 });
 
 
