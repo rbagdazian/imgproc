@@ -6,6 +6,17 @@ import reportWebVitals from './reportWebVitals';
 import Amplify from 'aws-amplify';
 import config from './aws-exports';
 Amplify.configure(config);
+Amplify.configure({
+  API: {
+    endpoints: [
+      {
+        name: "classify_digit",
+        endpoint:
+          "https://zr84qort75.execute-api.us-east-1.amazonaws.com/Prod/classify_digit",
+      },
+    ],
+  },
+});
 
 
 ReactDOM.render(
