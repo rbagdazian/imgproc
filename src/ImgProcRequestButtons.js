@@ -1,7 +1,7 @@
 import React from  'react';
 import './App.css'
 
-function ImgProcRequestButtons({requestHandler}) {
+function ImgProcRequestButtons({requestHandler, predLab, buttonOption}) {
     
     const br1 = () => requestHandler(1);
     const br2 = () => requestHandler(2);
@@ -12,6 +12,12 @@ function ImgProcRequestButtons({requestHandler}) {
     const br7 = () => requestHandler(7);
     
     return (
+        <>
+        {(predLab != '') ?
+            <span className='text-med'>The digit is: {predLab} </span>
+            :
+            ''
+        }
         <div className="img-proc-request-buttons">
         <table>
         <tbody>
@@ -24,11 +30,12 @@ function ImgProcRequestButtons({requestHandler}) {
         </tr>            
         <tr>
         <td><button onClick={br6}> Img Class </button></td>
-        <td><button onClick={br7}> Gen Image </button></td>
+        <td><button onClick={br7}> {buttonOption} </button></td>
         </tr>
         </tbody>
         </table>
         </div>
+        </>
         )
     
 }

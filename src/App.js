@@ -26,6 +26,8 @@ function App() {
   const [outputImgInfo, setOutputImgInfo] = useState({isValid:false});
   const [currentUserName, setCurrentUserName] = useState('');
   const [genImage, setGenImage] = useState(false);
+  const [predictedLabel, setPredictedLabel] = useState('');
+  const [buttonOption, setButtonOption] = useState('Edit Img');
 
   // function to send api call 2
   async function fetchGreeting(){
@@ -186,7 +188,6 @@ async  function delFile(e){
       setOutputImgInfo(newState);
     } 
     else{
-      const mydigits = "iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAABQGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGDiSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8rAyCDLIMQgxsCZmFxc4BgQ4ANUwgCjUcG3a0DVQHBZF2TWwmPutxO7FLa+827S7Tlpdx1TPQrgSkktTgbSf4A4IbmgqISBgTEGyFYuLykAsRuAbJEioKOA7CkgdjqEvQLEToKw94DVhAQ5A9kXgGyB5IzEFCD7AZCtk4Qkno7EhtoLAmxhwUYmFgQcSiooSa0oAdHO+QWVRZnpGSUKjsDQSVXwzEvW01EwMjAyZGAAhTVE9ecb4DBkFONAiMVeYmDQnwjyN0IsX5yB4RAHAwNPMUJM8w0DA18aA8NRtYLEokS4Axi/sRSnGRtB2NzbGRhYp/3//zmcgYFdk4Hh7/X//39v////7zIGBuZbDAwHvgEAq4heIf06wrwAAABWZVhJZk1NACoAAAAIAAGHaQAEAAAAAQAAABoAAAAAAAOShgAHAAAAEgAAAESgAgAEAAAAAQAAAH+gAwAEAAAAAQAAAIQAAAAAQVNDSUkAAABTY3JlZW5zaG90j9MWGwAAAYpJREFUeJy1kM0rRGEUxp/7uu64w+iaQphp8jHlIwkhH8lIaiQLZSE2NpKtZGHh35CUP8AWOwuKQkwmmUz5GLIRjTAxd65zLG5j7h2WnN3p1/Oc3/sC/zLSryv/gPkurX+SAYjr5V0AgJxG7qa+msL6KgBAsxB7KWvf7F5cJ2ZmMgxKrJVbk1LKo3E0LFNOpV8lZ5lqhbQtPB+XEcHCt9AiP4Sf7KK5eQ4BAOVbST6ZtAshZSqUDFXKiEWyIABI3oa+gFfQ0bEdiqJiJxUPD3vlz9uzU9igozHQVWFodcT0tLp+Y+/zbySIiJnJOBjIgT1J7x+cgiSRQ2npCT/YIMcWe5MxBucOzmiKyEoa0Rs2GMD9uMbIgoBuHvcpGROzQa0rMFelf8GdgTIA1T/WNH8BQHK3z3UrZJAF+pcCeSNXBCrtbKuVzrc3ny1Qay3Sp97BcHmcr0crh/d6+vUAqqeDjQBAby/R/d0d/fumBEAuDU50qI+34avHi1Dc+m+mbdtoWSQUumP80XwBdwyOoPfHcDkAAAAASUVORK5CYII=";
 
       if(buttonId == 6){
         // here we process a request for an image classification via the api endpoint
@@ -223,6 +224,7 @@ async  function delFile(e){
         API.post(apiName, path, myInit)
         .then(response => {
           console.log("response =>"+response.predicted_label);
+          setPredictedLabel(response.predicted_label);
         })
         .catch(error => {
           console.log("error resp =>"+error.response);
@@ -230,6 +232,7 @@ async  function delFile(e){
       }
       else if(buttonId == 7){
           setGenImage(!genImage);
+          (!genImage) ? setButtonOption('Modify Img') : setButtonOption('Edit Img');
       }
     }
   }
@@ -255,8 +258,8 @@ async  function delFile(e){
         <span className="cur-file-name">Current Input File : &nbsp;&nbsp;&nbsp; {curFileName} <input type="submit" value="Del" /> </span>            
         <FileDisplay state={curFileInfo} full={false} enable = {true} imgClass='file-display-img-large' />
         </form>
-        <ImgProcRequestButtons requestHandler={handleImgProcRequest} />
-        {genImage ?
+        <ImgProcRequestButtons requestHandler={handleImgProcRequest} predLab={predictedLabel} buttonOption={buttonOption} />
+        {!genImage ?
           <div>
           <FileDisplay state={outputImgInfo} full={false} enable ={true} imgClass='file-display-img-large' />
           <SaveImage saver={saveFile} />
