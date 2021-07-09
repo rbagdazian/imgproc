@@ -10,15 +10,15 @@ Amplify.configure({
   API: {
     "aws_cloud_logic_custom": [
       {
-        "name" : "imageclass",
-        "endpoint" : "https://zr84qort75.execute-api.us-east-1.amazonaws.com/Prod/classify_digit",
-        "region": "us-east-1"
-      },
-      {
           "name": "imageapi",
           "endpoint": "https://d7oqdnlrrf.execute-api.us-east-1.amazonaws.com/staging",
           "region": "us-east-1"
-      }      
+      },
+      {
+          "name": "imageclass",
+          "endpoint": "https://zr84qort75.execute-api.us-east-1.amazonaws.com/Stage",
+          "region": "us-east-1"
+      }          
     ],
   }
 });

@@ -1,14 +1,15 @@
 import logo from './logo.svg';
-import React, {useState, useEffect, useRef, Component} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import FileUpload from './FileUpload';
 import FileDisplay from './FileDisplay';
 import FileList from './FileList';
+import MouseImage from './MouseImage';
 import ImgProcRequestButtons from './ImgProcRequestButtons';
 import SaveImage from './SaveImage';
-import UserInfo from './UserInfo';
+
 
 import './App.css';
-import Amplify, { Storage } from 'aws-amplify';
+import { Storage } from 'aws-amplify';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 import {API, Auth} from 'aws-amplify'
 
@@ -24,6 +25,7 @@ function App() {
   const fileListRef = useRef();
   const [outputImgInfo, setOutputImgInfo] = useState({isValid:false});
   const [currentUserName, setCurrentUserName] = useState('');
+  const [genImage, setGenImage] = useState(false);
 
   // function to send api call 2
   async function fetchGreeting(){
@@ -33,29 +35,6 @@ function App() {
     setFilenames(response.message);
   }
 
- async  function cp1(){
-    const response = await API.get('imageapi',encodeURI('/image?cmd=check1'));
-    console.log(response.message);
-    setFilenames(response.message);
-  }
-  
-async  function cp2(){
-    const response = await API.get('imageapi',encodeURI('/image?cmd=check2'));
-    console.log(response.message);
-    setFilenames(response.message);
-  }  
-  
-async  function cp3(){
-    const response = await API.get('imageapi',encodeURI('/image?cmd=check3'));
-    console.log(response.message);
-    setFilenames(response.message);
-  }  
-  
-async  function cp4(){
-    const response = await API.get('imageapi',encodeURI('/image?cmd=check4'));
-    console.log(response.message);
-    setFilenames(response.message);
-  }    
 
 async  function getFilenames(){
     const userInfo = await Auth.currentUserInfo();
@@ -129,8 +108,9 @@ async  function delFile(e){
       // file info is contained in newUploadInfo.fileInfo
       setUploadInfo(newUploadInfo);
       setShowUpload(true);
-      console.log('CurrentState in uploader:');
-      console.log(newUploadInfo);
+      console.log('newUploadInfo in uploader:');
+      console.dir(newUploadInfo)
+      
       console.log('attempting to load:'+currentUserName+'/input/'+newUploadInfo.fileInfo.name);
       const filename = currentUserName+'/input/'+newUploadInfo.fileInfo.name;
       const file = newUploadInfo.fileInfo;
@@ -204,34 +184,53 @@ async  function delFile(e){
       const url = await Storage.get(response.message)
       let newState = {isValid:true, fileInfo:response.message, fileSrc: url};
       setOutputImgInfo(newState);
-    }
+    } 
     else{
-      // here we process a request for an image classification via the api endpoint
-      console.log('sending request for image classification');
+      const mydigits = "iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAABQGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGDiSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8rAyCDLIMQgxsCZmFxc4BgQ4ANUwgCjUcG3a0DVQHBZF2TWwmPutxO7FLa+827S7Tlpdx1TPQrgSkktTgbSf4A4IbmgqISBgTEGyFYuLykAsRuAbJEioKOA7CkgdjqEvQLEToKw94DVhAQ5A9kXgGyB5IzEFCD7AZCtk4Qkno7EhtoLAmxhwUYmFgQcSiooSa0oAdHO+QWVRZnpGSUKjsDQSVXwzEvW01EwMjAyZGAAhTVE9ecb4DBkFONAiMVeYmDQnwjyN0IsX5yB4RAHAwNPMUJM8w0DA18aA8NRtYLEokS4Axi/sRSnGRtB2NzbGRhYp/3//zmcgYFdk4Hh7/X//39v////7zIGBuZbDAwHvgEAq4heIf06wrwAAABWZVhJZk1NACoAAAAIAAGHaQAEAAAAAQAAABoAAAAAAAOShgAHAAAAEgAAAESgAgAEAAAAAQAAAH+gAwAEAAAAAQAAAIQAAAAAQVNDSUkAAABTY3JlZW5zaG90j9MWGwAAAYpJREFUeJy1kM0rRGEUxp/7uu64w+iaQphp8jHlIwkhH8lIaiQLZSE2NpKtZGHh35CUP8AWOwuKQkwmmUz5GLIRjTAxd65zLG5j7h2WnN3p1/Oc3/sC/zLSryv/gPkurX+SAYjr5V0AgJxG7qa+msL6KgBAsxB7KWvf7F5cJ2ZmMgxKrJVbk1LKo3E0LFNOpV8lZ5lqhbQtPB+XEcHCt9AiP4Sf7KK5eQ4BAOVbST6ZtAshZSqUDFXKiEWyIABI3oa+gFfQ0bEdiqJiJxUPD3vlz9uzU9igozHQVWFodcT0tLp+Y+/zbySIiJnJOBjIgT1J7x+cgiSRQ2npCT/YIMcWe5MxBucOzmiKyEoa0Rs2GMD9uMbIgoBuHvcpGROzQa0rMFelf8GdgTIA1T/WNH8BQHK3z3UrZJAF+pcCeSNXBCrtbKuVzrc3ny1Qay3Sp97BcHmcr0crh/d6+vUAqqeDjQBAby/R/d0d/fumBEAuDU50qI+34avHi1Dc+m+mbdtoWSQUumP80XwBdwyOoPfHcDkAAAAASUVORK5CYII=";
 
-      const apiName = 'imageclass';
-      const path = '/classify_digit'; 
-      const myInit = { // OPTIONAL
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: "iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAAAAABXZoBIAAABQGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGDiSSwoyGFhYGDIzSspCnJ3UoiIjFJgf8rAyCDLIMQgxsCZmFxc4BgQ4ANUwgCjUcG3a0DVQHBZF2TWwmPutxO7FLa+827S7Tlpdx1TPQrgSkktTgbSf4A4IbmgqISBgTEGyFYuLykAsRuAbJEioKOA7CkgdjqEvQLEToKw94DVhAQ5A9kXgGyB5IzEFCD7AZCtk4Qkno7EhtoLAmxhwUYmFgQcSiooSa0oAdHO+QWVRZnpGSUKjsDQSVXwzEvW01EwMjAyZGAAhTVE9ecb4DBkFONAiMVeYmDQnwjyN0IsX5yB4RAHAwNPMUJM8w0DA18aA8NRtYLEokS4Axi/sRSnGRtB2NzbGRhYp/3//zmcgYFdk4Hh7/X//39v////7zIGBuZbDAwHvgEAq4heIf06wrwAAABWZVhJZk1NACoAAAAIAAGHaQAEAAAAAQAAABoAAAAAAAOShgAHAAAAEgAAAESgAgAEAAAAAQAAAH+gAwAEAAAAAQAAAIQAAAAAQVNDSUkAAABTY3JlZW5zaG90j9MWGwAAAYpJREFUeJy1kM0rRGEUxp/7uu64w+iaQphp8jHlIwkhH8lIaiQLZSE2NpKtZGHh35CUP8AWOwuKQkwmmUz5GLIRjTAxd65zLG5j7h2WnN3p1/Oc3/sC/zLSryv/gPkurX+SAYjr5V0AgJxG7qa+msL6KgBAsxB7KWvf7F5cJ2ZmMgxKrJVbk1LKo3E0LFNOpV8lZ5lqhbQtPB+XEcHCt9AiP4Sf7KK5eQ4BAOVbST6ZtAshZSqUDFXKiEWyIABI3oa+gFfQ0bEdiqJiJxUPD3vlz9uzU9igozHQVWFodcT0tLp+Y+/zbySIiJnJOBjIgT1J7x+cgiSRQ2npCT/YIMcWe5MxBucOzmiKyEoa0Rs2GMD9uMbIgoBuHvcpGROzQa0rMFelf8GdgTIA1T/WNH8BQHK3z3UrZJAF+pcCeSNXBCrtbKuVzrc3ny1Qay3Sp97BcHmcr0crh/d6+vUAqqeDjQBAby/R/d0d/fumBEAuDU50qI+34avHi1Dc+m+mbdtoWSQUumP80XwBdwyOoPfHcDkAAAAASUVORK5CYII="
-      };
-
-      API.post(apiName, path, myInit)
-      .then(response => {
-        console.log("response =>"+response);
-      })
-      .catch(error => {
-        console.log("error resp =>"+error.response);
-      });
-      
-
-      
-      //response.json().then(data => {
-      //  console.log(data);
-      //});        
+      if(buttonId == 6){
+        // here we process a request for an image classification via the api endpoint
+        console.log('sending request for image classification');
+        // here we will retrieve the specified input image from the s3 bucket
+        const s3filename = currentUserName+'/input/'+curFileName;
+        console.log('Get url for file:'+s3filename);
+        const s3url = await Storage.get(s3filename);
+        console.log('s3url= '+s3url);
+        // now get the data from the remote
+        const resp = await fetch(s3url);
+        const ibuf = resp;
+        const dvx = await resp.arrayBuffer().then(function(img){ return new Uint8Array(img) });
+        //const base64String = btoa(String.fromCharCode(...new Uint8Array(img)));
+        var base64Arraybuffer = require("base64-arraybuffer");
+        const b64 = base64Arraybuffer.encode(dvx);
+        
+        console.log('--------------');
+        console.log(b64.length);
+        console.log('--------------');
+        console.log(b64);
+        console.log('--------------');
+        
+        const apiName = 'imageclass';
+        const path = encodeURI('/classify_digit'); 
+        const myInit = { // OPTIONAL
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': '*/*',
+            },
+            body: b64
+        };
+  
+        API.post(apiName, path, myInit)
+        .then(response => {
+          console.log("response =>"+response.predicted_label);
+        })
+        .catch(error => {
+          console.log("error resp =>"+error.response);
+        });
+      }
+      else if(buttonId == 7){
+          setGenImage(!genImage);
+      }
     }
   }
   
@@ -248,7 +247,7 @@ async  function delFile(e){
         <table>
         <tbody>
         <tr>
-          <td><FileList files={filenames} changer={changeFile} refx={fileListRef} /></td>
+          <td><FileList files={filenames} changer={changeFile} /></td>
         </tr>
         </tbody>
         </table>
@@ -257,11 +256,17 @@ async  function delFile(e){
         <FileDisplay state={curFileInfo} full={false} enable = {true} imgClass='file-display-img-large' />
         </form>
         <ImgProcRequestButtons requestHandler={handleImgProcRequest} />
-        <FileDisplay state={outputImgInfo} full={false} enable ={true} imgClass='file-display-img-large' />
-        <SaveImage saver={saveFile} />
+        {genImage ?
+          <div>
+          <FileDisplay state={outputImgInfo} full={false} enable ={true} imgClass='file-display-img-large' />
+          <SaveImage saver={saveFile} />
+          </div>
+          :
+          <MouseImage />
+        }
         <br />
       </body>
-      <AmplifySignOut />      
+      <AmplifySignOut />    
     </div>
   );
 }

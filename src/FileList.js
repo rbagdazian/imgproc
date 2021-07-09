@@ -4,18 +4,22 @@ import Amplify, { Storage } from 'aws-amplify';
 import {API} from 'aws-amplify'
 
 
-function FileList({files, changer, refx}){
+function FileList({files, changer}){
     const [fileName, setFileName] = useState([]);
-    //const selectionRef = useRef();
+    const refx = useRef();
     
+    var filesx = ["Select Desired Filename",...files];
 
-    let fileListItems = files.map( 
-        file => <option key={file} value={file}>{file}</option>
+    var fileListItems = files.map( 
+        file => <option key={file} value={file} id={file}>{file}</option>
     );
+
     
     function handleChange(event){
+        event.preventDefault();
         const fname = event.target.value;
         selectionChanged(fname);
+        refx.current.value = fname;
     }
     
     function selectionChanged(fname){
@@ -23,21 +27,31 @@ function FileList({files, changer, refx}){
         changer(fname);
     }
     
-    // first time only 
-    //useEffect( () => {console.log('useEffect-> '+fileName); selectionChanged(fileName)}, [selectionRef] );
+    function foo(){
+            //<label className="input-file-label" for="srcfile">Available files: </label>
+            //<select id="srcfile" onChange={handleChange} onClick={()=>{refx.current.value='';}}  ref={refx} >
+            //<select name="srcfile" onChange={handleChange} ref={refx} >
+            //    {fileListItems}
+            //</select>
+            //</>
+    }
+    
 
     
     let val=0;
+    console.log(fileListItems);
     return (
         <div>
-        {fileListItems.length > 0 ? (
-        <>
-        <label className="input-file-label" for="srcfile">Available files: </label>
-        <select id="srcfile" onChange={handleChange} ref={refx} >
-            {fileListItems}
-        </select>
-        </>
-        ) : '' 
+        {
+            (fileListItems.length > 0) ?
+            <>
+            <label className="input-file-label" for="srcfile">Available files: </label>
+            <select id="srcfile" onChange={handleChange}  ref={refx} >
+                {fileListItems}
+            </select>
+            </> 
+            :
+            ''
         }
         </div>
         )        
