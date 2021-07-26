@@ -5,6 +5,7 @@ import FileDisplay from './FileDisplay';
 import FileList from './FileList';
 import MouseImage from './MouseImage';
 import ImgProcRequestButtons from './ImgProcRequestButtons';
+import TextCommandBlock from './TextCommandBlock';
 import SaveImage from './SaveImage';
 
 
@@ -17,66 +18,105 @@ import {API, Auth} from 'aws-amplify'
 
 function App() {
   const [uploadInfo, setUploadInfo] = useState({isValid: false});
-  const [curFileName, setCurFileName] =useState('');
+  const [curImageName, setCurImageName] =useState('');
+  
   const [loading, setLoading] = useState(false);  
-  const [filenames, setFilenames] = useState([]);
-  const [curFileInfo, setCurFileInfo] = useState({isValid: false});
+
+  const [imageNames, setImageNames] = useState([]);
+  const [curImageInfo, setCurImageInfo] = useState({isValid: false});
+
+  const [cmdNames, setCmdNames] = useState([]);
+
+
   const [showUpload, setShowUpload] = useState(false);
   const fileListRef = useRef();
   const [outputImgInfo, setOutputImgInfo] = useState({isValid:false});
   const [currentUserName, setCurrentUserName] = useState('');
   const [genImage, setGenImage] = useState(false);
   const [predictedLabel, setPredictedLabel] = useState('');
-  const [buttonOption, setButtonOption] = useState('Edit Img');
-
-  // function to send api call 2
-  async function fetchGreeting(){
-    console.log('in fetchGreeting');
-    const response = await API.get('imageapi',encodeURI('/greeting?cmd=filenames'));
-    console.log(response.message);
-    setFilenames(response.message);
-  }
+  const [modImageEnable, setModImageEnable] = useState(true);
+  const [classImageEnable, setClassImageEnable] = useState(false);
+  const [procImageEnable, setProcImageEnable] = useState(false);
+  const [modeState, setModeState] = useState(1);
+  const [modImageStyle, setModImageStyle] = useState('mod-button-enable');
+  const [classImageStyle, setClassImageStyle] = useState('class-button-disable');
+  const [procImageStyle, setProcImageStyle] = useState('proc-button-disable');
 
 
-async  function getFilenames(){
-    const userInfo = await Auth.currentUserInfo();
-    const userName = userInfo['username'];
-    setCurrentUserName(userName);
+  var remoteFiles = [];
+  var userInfo;
+  var userName;
+  
+  
+async function getRemoteFiles(){
+    try {
+      userInfo = await Auth.currentUserInfo();
+      userName = userInfo['username'];
+      console.log('In Get current User is:');
+      console.log(userName);
+      setCurrentUserName(userName);
+    }
+    catch(error){
+      console.log('error:');
+      console.log(error);
+      userInfo = [];
+      userName = 'no user';
+      setCurrentUserName('');
+      return;
+    }
+    console.log('leaving getCurrentUser');  
     console.log('Requesting file names for user:'+userName);
     const response = await API.get('imageapi',encodeURI('/image?cmd=filenames&username='+userName));
-    const rm = response.message.files;
-    console.log(rm);
+    remoteFiles = response.message.files;
 
     let fm = [];
-    
-    for(var fn in rm){
-        console.log(fn);
-        console.log(rm[fn][0]);
-        if(rm[fn][0] =='input'){
-          fn = rm[fn][1]
-          console.log('have input file:'+ fn )
-          fm.push(fn)
-        }
-        
-//      console.log(fn+' '+ra[fn]);
-//      let nfn = ra[fn][1].trim().slice(1,-1);
-//      fm.push(nfn);
+    let fc = [];
+    var fn;
+
+    for(fn in remoteFiles){
+      if(remoteFiles[fn][0] =='input'){
+        fn = remoteFiles[fn][1]
+        fm.push(fn);
+      }
     }
-    console.log(fm);
+    
+
+    for(fn in remoteFiles){
+      if(remoteFiles[fn][0] =='cmd'){
+        fn = remoteFiles[fn][1]
+        fc.push(fn)
+      }
+    }
+
+
     const url = await Storage.get(userName+'/input/'+fm[0]);
     let newState = {isValid:true, fileInfo: 'input/'+fm[0], fileSrc: url}; 
-    setFilenames(fm);
-    setCurFileName(fm[0]);
-    setCurFileInfo(newState);
-  }
-  
-async  function delFile(e){
+    setImageNames(fm);
+    setCurImageName(fm[0]);
+    setCurImageInfo(newState);
+    
+
+    const url2 = await Storage.get(userName+'/cmd/'+fc[0]);
+    let newState2 = {isValid:true, fileInfo: 'cmd/'+fc[0], fileSrc: url2}; 
+
+    
+    console.log('Image files');
+    console.dir(fm);
+    console.log('Command names:');
+    console.dir(fc);
+    console.log('-------------');
+    setCmdNames(fc);
+
+
+}
+
+
+async  function delImageFile(e){
     e.preventDefault();
-    const fname = curFileName;
-    console.log('Deleting file names: input/'+ curFileName);
-    const response = await API.get('imageapi',encodeURI('/image?cmd=delete&file=input/'+curFileName));
-    console.log('response was:'+response.message);
-    updateFileNames();
+    const fname = curImageName;
+    console.log('Deleting file names: input/'+ curImageName);
+    await API.get('imageapi',encodeURI('/image?cmd=delete&file=input/'+curImageName))
+      .then( updateRemoteFiles() );
   }
   
 
@@ -84,22 +124,38 @@ async  function delFile(e){
     console.log('in doTest');
     const response = await API.get('imageapi',encodeURI('/doTest?cmd=check1'));
     console.log(response.message);
-    setFilenames(response.message);
+    setImageNames(response.message);
   }
   
-  async function changeFile(fname){
+  async function changeImage(fname){
     const url = await Storage.get(currentUserName+'/input/'+fname)
-    console.log("in ChangeFile remote url for image is: "+url);
+    console.log("in ChangeImage remote url for image is: "+url);
     let newState = {isValid:true, fileInfo:fname, fileSrc: url};    
     console.log(newState);
-    setCurFileName(fname);
-    setCurFileInfo(newState);
+    setCurImageName(fname);
+    setCurImageInfo(newState);
     setShowUpload(false);
   }
   
-  const updateFileNames = () =>{ setTimeout(getFilenames, 1000); };
+  async function changeCmd(fname){
+    const url = await Storage.get(currentUserName+'/cmd/'+fname)
+    console.log("in ChangeCmd remote url for cmd is: ");
+    console.dir(url);
+    let newState = {isValid:true, fileInfo:fname, fileSrc: url};    
+    console.log(newState);
+    setShowUpload(false);
+  }
   
-  useEffect( () => {updateFileNames()},[uploadInfo]);
+
+  const updateRemoteFiles = async () => { setTimeout(getRemoteFiles, 5000) };
+  //const updateImageNames = async () => {setTimeout(getImageFilenames, 5000) };
+  //const updateCmdFilenames = async () => {setTimeout(getCmdFilenames, 5000) };
+
+  useEffect( async () => {
+         updateRemoteFiles()
+      },
+      [uploadInfo]);
+      
   
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -130,7 +186,7 @@ async  function delFile(e){
         const url = await Storage.get(filename);
         console.log("remote url for image is: "+url);
         setLoading(false);
-        setCurFileName(filename);
+        setCurImageName(filename);
       } catch (err) {
         console.log(err);
       }
@@ -138,9 +194,9 @@ async  function delFile(e){
   }
   
   const saveFile = async () => {
-      const s3filename = currentUserName+'/output/'+curFileName;
+      const s3filename = currentUserName+'/output/'+curImageName;
       const s3url = await Storage.get(s3filename);
-      const dloadName = 'out'+curFileName;
+      const dloadName = 'out'+curImageName;
       download(s3url,dloadName);
     };
   
@@ -178,8 +234,8 @@ async  function delFile(e){
     console.log('process request for:'+funcStr)
     if (buttonId < 6){
       console.log('current user is:'+currentUserName)
-      console.log('current file: '+curFileName)
-      const rqStr = '/image?cmd=fcn&func='+funcStr+'&'+'file='+currentUserName+'/input/'+curFileName
+      console.log('current file: '+curImageName)
+      const rqStr = '/image?cmd=fcn&func='+funcStr+'&'+'file='+currentUserName+'/input/'+curImageName
       console.log(rqStr)
       const response = await API.get('imageapi',encodeURI(rqStr));
       console.log(response.message);
@@ -193,7 +249,7 @@ async  function delFile(e){
         // here we process a request for an image classification via the api endpoint
         console.log('sending request for image classification');
         // here we will retrieve the specified input image from the s3 bucket
-        const s3filename = currentUserName+'/input/'+curFileName;
+        const s3filename = currentUserName+'/input/'+curImageName;
         console.log('Get url for file:'+s3filename);
         const s3url = await Storage.get(s3filename);
         console.log('s3url= '+s3url);
@@ -230,12 +286,20 @@ async  function delFile(e){
           console.log("error resp =>"+error.response);
         });
       }
-      else if(buttonId == 7){
-          setGenImage(!genImage);
-          (!genImage) ? setButtonOption('Modify Img') : setButtonOption('Edit Img');
-      }
     }
   }
+  
+  
+  
+  const doModImageEnable = (e)=>{ setModImageEnable(true); setClassImageEnable(false); setProcImageEnable(false); setModeState(1);
+                                  setModImageStyle('mod-button-enable'); setClassImageStyle('class-button-disable'); setProcImageStyle('proc-button-disable');
+                                };
+  const doClassImageEnable = (e)=>{ setModImageEnable(false); setClassImageEnable(true);  setProcImageEnable(false); setModeState(2);
+                                  setModImageStyle('mod-button-disable'); setClassImageStyle('class-button-enable'); setProcImageStyle('proc-button-disable');
+                                };
+  const doProcImageEnable = (e)=>{ setModImageEnable(false); setClassImageEnable(false);  setProcImageEnable(true); setModeState(3);
+                                  setModImageStyle('mod-button-disable'); setClassImageStyle('class-button-disable'); setProcImageStyle('proc-button-enable');
+                                };
   
   
   return (
@@ -247,27 +311,42 @@ async  function delFile(e){
       <body className="App-body">
         <FileUpload uploader={uploader}/>
         <FileDisplay state={uploadInfo} full={true} enable={showUpload} imgClass='file-display-img-sm' />
-        <table>
-        <tbody>
-        <tr>
-          <td><FileList files={filenames} changer={changeFile} /></td>
-        </tr>
-        </tbody>
-        </table>
-        <form onSubmit={delFile}>
-        <span className="cur-file-name">Current Input File : &nbsp;&nbsp;&nbsp; {curFileName} <input type="submit" value="Del" /> </span>            
-        <FileDisplay state={curFileInfo} full={false} enable = {true} imgClass='file-display-img-large' />
+        <FileList files={imageNames} changer={changeImage} />        
+        <form onSubmit={delImageFile}>
+        <span className="cur-file-name">Current Input File : &nbsp;&nbsp;&nbsp; {curImageName} <input type="submit" value="Del" /> </span>            
+        <FileDisplay state={curImageInfo} full={false} enable = {true} imgClass='file-display-img-large' />
         </form>
-        <ImgProcRequestButtons requestHandler={handleImgProcRequest} predLab={predictedLabel} buttonOption={buttonOption} />
-        {!genImage ?
-          <div>
-          <FileDisplay state={outputImgInfo} full={false} enable ={true} imgClass='file-display-img-large' />
-          <SaveImage saver={saveFile} />
-          </div>
-          :
-          <MouseImage />
+        {(classImageEnable) ?
+            <span className='text-med'>The digit is: {predictedLabel} </span>
+            :
+            ' -- '
         }
-        <br />
+        <div className='btn-controls'>
+          <button className={modImageStyle} onClick={doModImageEnable}>Mod Image</button>
+          <button className={classImageStyle} onClick={doClassImageEnable}>Class Image</button>
+          <button className={procImageStyle} onClick={doProcImageEnable}>Process Image</button>
+          {
+            {
+              1: 
+                <div className="img-proc-request-buttons">
+                  <ImgProcRequestButtons requestHandler={handleImgProcRequest} predLab={predictedLabel} buttonOption={classImageEnable} />
+                  <FileDisplay state={outputImgInfo} full={false} enable ={true} imgClass='file-display-img-large' />
+                  <SaveImage saver={saveFile} />
+                </div> ,
+              2: 
+                <div className="img-proc-request-buttons">
+                  <ImgProcRequestButtons requestHandler={handleImgProcRequest} predLab={predictedLabel} buttonOption={classImageEnable} />
+                  <MouseImage />
+                </div>
+                ,
+              3:
+                <div className="proc-img-block">
+                  <TextCommandBlock currentUser={currentUserName} cmdNames={cmdNames} />
+                </div>
+              
+            }[modeState]
+          }
+        </div>
       </body>
       <AmplifySignOut />    
     </div>

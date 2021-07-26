@@ -13,14 +13,9 @@ function ImgProcRequestButtons({requestHandler, predLab, buttonOption}) {
     
     return (
         <>
-        {(predLab != '') ?
-            <span className='text-med'>The digit is: {predLab} </span>
-            :
-            ''
-        }
-        <div className="img-proc-request-buttons">
         <table>
         <tbody>
+        {buttonOption == false ? (
         <tr>
         <td><button onClick={br1}> Invert </button></td>
         <td><button onClick={br2}> Monochrome </button></td>
@@ -28,13 +23,15 @@ function ImgProcRequestButtons({requestHandler, predLab, buttonOption}) {
         <td><button onClick={br4}> Canny E.D. </button></td>
         <td><button onClick={br5}> Unsharp </button></td>
         </tr>            
+        )
+        :
+        (
         <tr>
         <td><button onClick={br6}> Img Class </button></td>
-        <td><button onClick={br7}> {buttonOption} </button></td>
         </tr>
+        )}
         </tbody>
         </table>
-        </div>
         </>
         )
     

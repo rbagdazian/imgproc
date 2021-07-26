@@ -16,9 +16,9 @@ function FileDisplay({state, full, enable, imgClass }) {
         else if (state.isValid) {
             filesrc = state.fileSrc;
             let fileInfo = state.fileInfo;
-            console.log('file source ->'+ filesrc)
-            console.log('file info -> '+ fileInfo) 
-            console.log('full state is: ' + full)
+            //console.log('file source ->'+ filesrc)
+            //console.log('file info -> '+ fileInfo) 
+            //console.log('full state is: ' + full)
         }
         else {
             return (

@@ -6,7 +6,7 @@ import {API} from 'aws-amplify'
 
 function FileList({files, changer}){
     const [fileName, setFileName] = useState([]);
-    const refx = useRef();
+    const refX = useRef();
     
     var filesx = ["Select Desired Filename",...files];
 
@@ -18,8 +18,8 @@ function FileList({files, changer}){
     function handleChange(event){
         event.preventDefault();
         const fname = event.target.value;
+        refX.current.value = fname;
         selectionChanged(fname);
-        refx.current.value = fname;
     }
     
     function selectionChanged(fname){
@@ -27,31 +27,19 @@ function FileList({files, changer}){
         changer(fname);
     }
     
-    function foo(){
-            //<label className="input-file-label" for="srcfile">Available files: </label>
-            //<select id="srcfile" onChange={handleChange} onClick={()=>{refx.current.value='';}}  ref={refx} >
-            //<select name="srcfile" onChange={handleChange} ref={refx} >
-            //    {fileListItems}
-            //</select>
-            //</>
-    }
-    
-
-    
     let val=0;
-    console.log(fileListItems);
     return (
         <div>
         {
             (fileListItems.length > 0) ?
-            <>
-            <label className="input-file-label" for="srcfile">Available files: </label>
-            <select id="srcfile" onChange={handleChange}  ref={refx} >
-                {fileListItems}
-            </select>
-            </> 
+            <div>
+                <label  for='srcfile'>Available files: </label>
+                <select id='srcfile' onChange={handleChange} ref={refX} >
+                    {fileListItems}
+                </select>
+            </div>
             :
-            ''
+            <div className='small-font'>No files available.</div>
         }
         </div>
         )        
