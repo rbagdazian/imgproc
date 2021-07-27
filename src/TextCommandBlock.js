@@ -3,20 +3,23 @@ import { Storage } from 'aws-amplify';
 import FileList from './FileList';
 import './App.css'
 
-function TextCommandBlock({currentUser, cmdNames}) {
-    const textRef = useRef();
+function TextCommandBlock({blockStyle, currentUser, cmdNames, dirname, rowcol, addButton, buttonClick, tref}) {
     const cmdRef = useRef();
     const [cNameOptions, setCNameOptions] = useState([]);
     const [fileContents, setFileContents] = useState('Howdy');
+    const [lDirname,setLDirname] = useState('');
     
   useEffect( () => {
         var fileListItems = cmdNames.map( 
             file => <option key={file} value={file} id={file}>{file}</option>
         );      
         setCNameOptions(fileListItems);
+        setLDirname(dirname);
         console.log('tcb in useeffect, cmdnames being set');
+        console.log(dirname);
+        console.log('-----');
         console.dir(fileListItems);
-      },  );  /* [fileContents] */
+      }, [cmdNames, dirname]  );  /* [fileContents] */
     
     function loadFile(event){
         console.log(cmdRef.current.value);
@@ -26,8 +29,8 @@ function TextCommandBlock({currentUser, cmdNames}) {
     
     function saveFile(event){
         const fileName=prompt("Enter a name for the command block:"); 
-        console.log(textRef.current.value);
-        const cmdText = textRef.current.value;
+        console.log(tref.current.value);
+        const cmdText = tref.current.value;
         uploadFile(currentUser, fileName, cmdText);
     }
     
@@ -40,7 +43,7 @@ function TextCommandBlock({currentUser, cmdNames}) {
     
       // file info is contained in newUploadInfo.fileInfo
 
-      const filename = currentUser +'/cmd/'+ fname;
+      const filename = currentUser +'/'+ lDirname +'/'+ fname;
       console.log('attempting to upload :'+filename);
       try {
 
@@ -56,7 +59,7 @@ function TextCommandBlock({currentUser, cmdNames}) {
   }
   
   async function fetchFile(currentUser, fname){
-        const filename = currentUser + '/cmd/'+ fname;
+        const filename = currentUser + '/'+lDirname+'/'+ fname;
         console.log('attempting to fetch file:'+filename);
         const config = {download:true};
         var retVal;
@@ -67,7 +70,7 @@ function TextCommandBlock({currentUser, cmdNames}) {
 
     function handleChange(event){
         event.preventDefault();
-        console.log('the current command file by ref is:');
+        console.log('the current file by ref is:');
         console.log(cmdRef.current.value);
         const fname = cmdRef.current.value;
     }
@@ -75,20 +78,29 @@ function TextCommandBlock({currentUser, cmdNames}) {
     //             <label className = 'mid-font' for="cmdtxt">Command Text:</label>  rows="10" cols="50" 
 
 
-    const handleTextChange = (event) => {
+    const handleCmdChange = (event) => {
         //setFileContents(event.target.value);
         console.log(event.target.value);
     };
         
+    const handleTextChange = (event) => {
+        setFileContents(event.target.value);
+    };
+
+    var additionalButtons = addButton.map( 
+        bname => <button key={bname} value={bname} id={bname} onClick={buttonClick} >{bname} </button>
+    );
+    
+
 
     return ( 
-        <div className='text-command-block'>
+        <div className={blockStyle}>
             <div>
             {
                 (cNameOptions.length > 0) ?
                 <div  >
-                    <label for="cmdfilename">Available cmd files: </label>
-                    <select  id="cmdfilename" onChange={handleTextChange}  ref={cmdRef} >
+                    <label for="cmdfilename">Available {lDirname} files: </label>
+                    <select  id="cmdfilename" onChange={handleCmdChange}  ref={cmdRef} >
                         {cNameOptions}
                     </select>
                 </div> 
@@ -99,11 +111,12 @@ function TextCommandBlock({currentUser, cmdNames}) {
             }
             </div>
             <div>
-                <textarea className='cmd-text' id="cmdtxt" name="cmdtxt"  ref={textRef} value={fileContents} onChange={handleTextChange}   cols="45" rows="7" />
+                <textarea className='cmd-text' id="cmdtxt" name="cmdtxt"  ref={tref} value={fileContents} onChange={handleTextChange}   cols={rowcol[0]} rows={rowcol[1]} />
                 <div className='sidebar2'>
                 <button onClick={loadFile}>Load File</button>
                 <button onClick={saveFile}>Save File</button>
                 <button onClick={delFile}>Delete File</button>
+                {additionalButtons}
                 </div>
             </div>
         </div>

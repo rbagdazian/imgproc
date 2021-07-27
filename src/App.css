@@ -309,6 +309,26 @@
   margin: 2px;
 }
 
+.lisp-block{
+  position: relative;
+  width: 80%;
+  height: 40vh;
+  border: 2px solid #f00;
+  padding: 2px;
+  margin: 2px;
+}
+.lisp-output{
+  position: relative;
+  width: 80%;
+  height: 40vh;
+  border: 2px solid #f00;
+  padding: 2px;
+  margin: 2px;
+}
+
+
+
+
 .mouse-box{
   position: relative;
   width: 512px;
@@ -320,6 +340,8 @@
 
 .cmd-text {
   position: absolute;
-  left: 30px;
+  width:  75%;
+  height: 80%;
+  left: 10px;
   top: 2.5em;
 }
