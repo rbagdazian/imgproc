@@ -385,7 +385,7 @@ async  function delImageFile(e){
         <div className='btn-controls'>
           <button className={modImageStyle} onClick={doModImageEnable}>Mod Image</button>
           <button className={classImageStyle} onClick={doClassImageEnable}>Class Image</button>
-          <button className={procImageStyle} onClick={doProcImageEnable}>Process Image</button>
+          // <button className={procImageStyle} onClick={doProcImageEnable}>Process Image</button>
           {
             {
               1: 
