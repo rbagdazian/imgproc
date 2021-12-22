@@ -375,6 +375,7 @@ async  function delImageFile(e){
         </form>
         <span>
         <ClassRequestButton requestHandler={handleClassifyRequest} benable={classImageEnable} />
+        <br />
         {(classImageEnable) ?
             <span className='text-med'>The digit is: {predictedLabel} </span>
             :

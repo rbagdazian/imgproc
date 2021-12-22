@@ -13,9 +13,9 @@ function ImgProcRequestButtons({requestHandler,  buttonOption}) {
     
     return (
         <>
+        {buttonOption == false ? (
         <table>
         <tbody>
-        {buttonOption == false ? (
         <tr>
         <td><button onClick={br1}> Invert </button></td>
         <td><button onClick={br2}> Monochrome </button></td>
@@ -23,15 +23,13 @@ function ImgProcRequestButtons({requestHandler,  buttonOption}) {
         <td><button onClick={br4}> Canny E.D. </button></td>
         <td><button onClick={br5}> Unsharp </button></td>
         </tr>            
+        </tbody>
+        </table>
         )
         :
         (
-        <tr>
-        <td><button onClick={br6}> Img Class </button></td>
-        </tr>
+        <br />
         )}
-        </tbody>
-        </table>
         </>
         )
     
