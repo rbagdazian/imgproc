@@ -1,7 +1,7 @@
 import React from  'react';
 import './App.css'
 
-function ImgProcRequestButtons({requestHandler, predLab, buttonOption}) {
+function ImgProcRequestButtons({requestHandler,  buttonOption}) {
     
     const br1 = () => requestHandler(1);
     const br2 = () => requestHandler(2);

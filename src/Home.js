@@ -156,7 +156,7 @@ async  function delImageFile(e){
   }
   
 
-  const updateRemoteFiles = async () => { setTimeout(getRemoteFiles, 5000) };
+  const updateRemoteFiles = async () => { setTimeout(getRemoteFiles, 100) };
   //const updateImageNames = async () => {setTimeout(getImageFilenames, 5000) };
   //const updateCmdFilenames = async () => {setTimeout(getCmdFilenames, 5000) };
 

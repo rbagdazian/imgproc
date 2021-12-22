@@ -13,9 +13,7 @@ import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import {API, Auth} from 'aws-amplify';
 
 import Home from './Home';
-import Lisp from './Lisp/Lisp';
 
-  
 function App() {
   return (
     <Router>
@@ -25,18 +23,12 @@ function App() {
             <li>
               <Link to="/">Home</Link>
             </li>
-            <li>
-              <Link to="/lisp">Lisp</Link>
-            </li>
           </ul>
         </nav>
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/lisp">
-            <Lisp />
-          </Route>
           <Route path="/">
             <Home />
           </Route>

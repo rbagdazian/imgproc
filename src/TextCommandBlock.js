@@ -3,7 +3,7 @@ import { Storage } from 'aws-amplify';
 import FileList from './FileList';
 import './App.css'
 
-function TextCommandBlock({blockStyle, currentUser, cmdNames, dirname, rowcol, addButton, buttonClick, tref}) {
+function TextCommandBlock({blockStyle, currentUser, cmdNames, dirname, rowcol, addButton, buttonClick, tref, tChange}) {
     const cmdRef = useRef();
     const [cNameOptions, setCNameOptions] = useState([]);
     const [fileContents, setFileContents] = useState('Howdy');
@@ -82,16 +82,38 @@ function TextCommandBlock({blockStyle, currentUser, cmdNames, dirname, rowcol, a
         //setFileContents(event.target.value);
         console.log(event.target.value);
     };
-        
+    
     const handleTextChange = (event) => {
-        setFileContents(event.target.value);
-    };
+        event.preventDefault();
 
+        var curText = tref.current.value;
+        if(event.keyCode === 8){
+            curText = curText.slice(0,-1);
+        }
+        else if(event.keyCode === 13){
+            curText += '\n';
+        }
+        else if(event.keyCode < 32){
+            ;
+        }
+        else{
+            curText += event.key;
+        }
+        console.dir(event);
+        console.log(curText);
+        
+        setFileContents(curText);
+        
+        // now let upper level handle input
+        tChange(event);
+        
+    }
+        
     var additionalButtons = addButton.map( 
         bname => <button key={bname} value={bname} id={bname} onClick={buttonClick} >{bname} </button>
     );
     
-
+//onKeyDown={tChange}
 
     return ( 
         <div className={blockStyle}>
@@ -111,7 +133,7 @@ function TextCommandBlock({blockStyle, currentUser, cmdNames, dirname, rowcol, a
             }
             </div>
             <div>
-                <textarea className='cmd-text' id="cmdtxt" name="cmdtxt"  ref={tref} value={fileContents} onChange={handleTextChange}   cols={rowcol[0]} rows={rowcol[1]} />
+                <textarea className='cmd-text' id="cmdtxt" name="cmdtxt"  ref={tref} value={fileContents} onKeyDown={handleTextChange}   cols={rowcol[0]} rows={rowcol[1]} />
                 <div className='sidebar2'>
                 <button onClick={loadFile}>Load File</button>
                 <button onClick={saveFile}>Save File</button>
