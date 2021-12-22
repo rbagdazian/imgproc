@@ -327,11 +327,16 @@ async  function delImageFile(e){
         <span className="cur-file-name">Current Input File : &nbsp;&nbsp;&nbsp; {curImageName} <input type="submit" value="Del" /> </span>            
         <FileDisplay state={curImageInfo} full={false} enable = {true} imgClass='file-display-img-large' />
         </form>
+        <span>
+        ---------------------------------
+        <ImgProcRequestButtons requestHandler={handleImgProcRequest} buttonOption={classImageEnable} />
         {(classImageEnable) ?
             <span className='text-med'>The digit is: {predictedLabel} </span>
             :
             ' -- '
         }
+        ---------------------------------
+        </span>
         <div className='btn-controls'>
           <button className={modImageStyle} onClick={doModImageEnable}>Mod Image</button>
           <button className={classImageStyle} onClick={doClassImageEnable}>Class Image</button>
@@ -340,13 +345,13 @@ async  function delImageFile(e){
             {
               1: 
                 <div className="img-proc-request-buttons">
-                  <ImgProcRequestButtons requestHandler={handleImgProcRequest} predLab={predictedLabel} buttonOption={classImageEnable} />
+                  <ImgProcRequestButtons requestHandler={handleImgProcRequest} buttonOption={classImageEnable} />
                   <FileDisplay state={outputImgInfo} full={false} enable ={true} imgClass='file-display-img-large' />
                   <SaveImage saver={saveFile} />
                 </div> ,
               2: 
                 <div className="img-proc-request-buttons">
-                  <ImgProcRequestButtons requestHandler={handleImgProcRequest} predLab={predictedLabel} buttonOption={classImageEnable} />
+                  <ImgProcRequestButtons requestHandler={handleImgProcRequest} buttonOption={classImageEnable} />
                   <MouseImage />
                 </div>
                 ,
