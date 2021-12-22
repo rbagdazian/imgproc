@@ -12,6 +12,7 @@ import FileDisplay from './FileDisplay';
 import FileList from './FileList';
 import MouseImage from './MouseImage';
 import ImgProcRequestButtons from './ImgProcRequestButtons';
+import ClassRequestButton from './ClassRequestButton';
 import TextCommandBlock from './TextCommandBlock';
 import SaveImage from './SaveImage';
 
@@ -228,6 +229,51 @@ async  function delImageFile(e){
   };
   
   
+  async function handleClassifyRequest(){
+   
+        // here we process a request for an image classification via the api endpoint
+        console.log('sending request for image classification');
+        // here we will retrieve the specified input image from the s3 bucket
+        const s3filename = currentUserName+'/input/'+curImageName;
+        console.log('Get url for file:'+s3filename);
+        const s3url = await Storage.get(s3filename);
+        console.log('s3url= '+s3url);
+        // now get the data from the remote
+        const resp = await fetch(s3url);
+        const ibuf = resp;
+        const dvx = await resp.arrayBuffer().then(function(img){ return new Uint8Array(img) });
+        //const base64String = btoa(String.fromCharCode(...new Uint8Array(img)));
+        var base64Arraybuffer = require("base64-arraybuffer");
+        const b64 = base64Arraybuffer.encode(dvx);
+        
+        console.log('--------------');
+        console.log(b64.length);
+        console.log('--------------');
+        console.log(b64);
+        console.log('--------------');
+        
+        const apiName = 'imageclass';
+        const path = encodeURI('/classify_digit'); 
+        const myInit = { // OPTIONAL
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': '*/*',
+            },
+            body: b64
+        };
+  
+        API.post(apiName, path, myInit)
+        .then(response => {
+          console.log("response =>"+response.predicted_label);
+          setPredictedLabel(response.predicted_label);
+        })
+        .catch(error => {
+          console.log("error resp =>"+error.response);
+        });
+
+  }
+  
+  
       
   async function handleImgProcRequest(buttonId){
     console.log('in handleImgProcRequest')
@@ -328,14 +374,12 @@ async  function delImageFile(e){
         <FileDisplay state={curImageInfo} full={false} enable = {true} imgClass='file-display-img-large' />
         </form>
         <span>
-        ---------------------------------
-        <ImgProcRequestButtons requestHandler={handleImgProcRequest} buttonOption={classImageEnable} />
+        <ClassRequestButton requestHandler={handleClassifyRequest} benable={classImageEnable} />
         {(classImageEnable) ?
             <span className='text-med'>The digit is: {predictedLabel} </span>
             :
             ' -- '
         }
-        ---------------------------------
         </span>
         <div className='btn-controls'>
           <button className={modImageStyle} onClick={doModImageEnable}>Mod Image</button>
