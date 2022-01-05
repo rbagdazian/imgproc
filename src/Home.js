@@ -408,6 +408,11 @@ async  function delImageFile(e){
             }[modeState]
           }
         </div>
+        <div>
+        <br />
+        <a href="https://us-east-1.sumerian.aws/bb8b5d5da2194b908d77b64da22e1574.scene">Go to Sumerian Demo</a>
+        <br />
+        </div>
       </body>
       <AmplifySignOut />    
     </div>
